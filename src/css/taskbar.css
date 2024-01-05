@@ -1,0 +1,37 @@
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 70px;
+  background-color: aliceblue;
+}
+
+.taskbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  background-color: rgb(147, 177, 147);
+}
+
+footer img {
+  max-height: 100%;
+  width: auto;
+}
+
+footer .button {
+  height: 100%;
+  background-color: blueviolet;
+  width: fit-content;
+}
+
+footer .button:hover {
+  background-color: rgba(0, 0, 0, 0.171);
+}
+
+footer a:active .button {
+  background-color: brown;
+}
+
+footer a {
+  max-width: 70px;
+}
