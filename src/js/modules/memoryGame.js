@@ -27,12 +27,12 @@ export class MemoryGame extends AppWindow {
     document.getElementById('desktop').appendChild(gameWindow)
   }
 
-  #shuffleImages (pairs) {
+  #getGameImages (pairs) {
     const array = []
 
     for (let i = 0; i > pairs; i++) {
-      array[2 * i] = i
-      array[2 * i + 1] = i
+      array[2 * i] = i + 1
+      array[2 * i + 1] = i + 1
     }
 
     for (let i = array.length - 1; i > 0; i--) {
