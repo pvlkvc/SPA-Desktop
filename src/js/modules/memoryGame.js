@@ -74,8 +74,14 @@ export class MemoryGame extends AppWindow {
 
         const image = document.createElement('img')
         image.classList.add('memory-card-image')
+        image.classList.add('memory-card-image-covered')
         image.setAttribute('src', './img/pet-' + this.#images[index] + '.png')
         card.appendChild(image)
+
+        card.addEventListener('click', () => {
+          image.classList.add('memory-card-image-uncovered')
+          image.classList.remove('memory-card-image-covered')
+        })
 
         row.appendChild(card)
         index++

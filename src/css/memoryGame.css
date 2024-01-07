@@ -14,3 +14,11 @@
   height: 100%;
   width: auto;
 }
+
+.memory-card-image-covered {
+  opacity: 20%;
+}
+
+.memory-card-image-uncovered {
+  opacity: 100%;
+}
