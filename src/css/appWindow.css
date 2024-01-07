@@ -2,7 +2,7 @@
   position: relative;
   top: 0;
   left: 0;
-  height: 100px;
-  width: 100px;
+  height: fit-content;
+  width: fit-content;
   background-color: blue;
 }

@@ -3,6 +3,8 @@ import * as dragAndDrop from './dragAndDrop.js'
 
 export class MemoryGame extends AppWindow {
   #images
+  #width = 4
+  #height = 4
 
   constructor () {
     super()
@@ -24,13 +26,22 @@ export class MemoryGame extends AppWindow {
     gameWindow.classList.add('app-window')
     dragAndDrop.makeDraggable(gameWindow)
 
+    this.#getGameImages(this.#width * this.#height)
+
+    const gameboard = this.#getGameboard()
+    gameWindow.appendChild(gameboard)
+
     document.getElementById('desktop').appendChild(gameWindow)
   }
 
-  #getGameImages (pairs) {
+  /**
+   * Shuffles the image ids for the game.
+   * @param { number } images number of images in the game
+   */
+  #getGameImages (images) {
     const array = []
 
-    for (let i = 0; i > pairs; i++) {
+    for (let i = 0; i > images / 2; i++) {
       array[2 * i] = i + 1
       array[2 * i + 1] = i + 1
     }
@@ -43,5 +54,26 @@ export class MemoryGame extends AppWindow {
     }
 
     this.#images = array
+  }
+
+  /**
+   * Creates and returns a gameboard for the upcoming game.
+   * @returns { HTMLElement } gameboard populated with cards
+   */
+  #getGameboard () {
+    const gameboard = document.createElement('div')
+
+    for (let i = 0; i < this.#height; i++) {
+      const row = document.createElement('div')
+      row.classList.add('memory-row')
+      gameboard.appendChild(row)
+      for (let i = 0; i < this.#width; i++) {
+        const card = document.createElement('div')
+        card.classList.add('memory-card')
+        row.appendChild(card)
+      }
+    }
+
+    return gameboard
   }
 }

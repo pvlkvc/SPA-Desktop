@@ -1,0 +1,11 @@
+.memory-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.memory-card {
+  height: 50px;
+  width: 50px;
+  background-color: palevioletred;
+  margin: 5px;
+}
