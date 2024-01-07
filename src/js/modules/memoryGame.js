@@ -2,8 +2,7 @@ import { AppWindow } from './appWindow'
 import * as dragAndDrop from './dragAndDrop.js'
 
 export class MemoryGame extends AppWindow {
-  images = ['./img/pet-1.png', './img/pet-2.png', './img/pet-3.png', './img/pet-4.png',
-    './img/pet-5.png', './img/pet-6.png', './img/pet-7.png', './img/pet-8.png']
+  #images
 
   constructor () {
     super()
@@ -14,11 +13,6 @@ export class MemoryGame extends AppWindow {
     console.log('memory game added.')
 
     this.launchApp()
-
-    // const text = document.createElement('')
-    // text.textContent = 'wassup'
-
-    // document.getElementById('maine').appendChild(text)
   }
 
   disconnectedCallback () {
@@ -31,5 +25,23 @@ export class MemoryGame extends AppWindow {
     dragAndDrop.makeDraggable(gameWindow)
 
     document.getElementById('desktop').appendChild(gameWindow)
+  }
+
+  #shuffleImages (pairs) {
+    const array = []
+
+    for (let i = 0; i > pairs; i++) {
+      array[2 * i] = i
+      array[2 * i + 1] = i
+    }
+
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      const temp = array[i]
+      array[i] = array[j]
+      array[j] = temp
+    }
+
+    this.#images = array
   }
 }
