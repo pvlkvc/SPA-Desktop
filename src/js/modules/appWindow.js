@@ -1,15 +1,11 @@
-import * as dragAndDrop from './dragAndDrop.js'
-
 export class AppWindow extends HTMLElement {
-  #draggable = 'true'
+  constructor () {
+    super()
 
-  appWindow
+    console.log('app window constructed')
+  }
 
   connectedCallback () {
-    console.log('App window added.')
-
-    this.appWindow = document.createElement('div')
-    dragAndDrop.makeDraggable(this.appWindow)
-    document.appendChild(this.appWindow)
+    console.log('app window added.')
   }
 }

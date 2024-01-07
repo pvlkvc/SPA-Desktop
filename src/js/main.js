@@ -11,19 +11,10 @@ const memoryGameButton = document.getElementById('buttonA')
 // prepare desktop as a dropzone
 dap.makeDropZone(desktop)
 
-// drag test
-const testdiv = document.getElementById('testdiv')
-dap.makeDraggable(testdiv)
-
 // buttons listeners
 memoryGameButton.addEventListener('click', () => {
   console.log('memory button clicked')
 
-  const tempEl = document.createElement('input')
-  if (tempEl != null) {
-    desktop.appendChild(tempEl)
-  }
-
-  // const memory = document.createElement('memory-game')
-  // desktop.appendChild(memory)
+  const memory = document.createElement('memory-game')
+  desktop.appendChild(memory)
 })

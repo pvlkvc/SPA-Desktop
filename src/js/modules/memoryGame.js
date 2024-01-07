@@ -1,4 +1,5 @@
 import { AppWindow } from './appWindow'
+import * as dragAndDrop from './dragAndDrop.js'
 
 export class MemoryGame extends AppWindow {
   images = ['./img/pet-1.png', './img/pet-2.png', './img/pet-3.png', './img/pet-4.png',
@@ -6,11 +7,11 @@ export class MemoryGame extends AppWindow {
 
   constructor () {
     super()
-    console.log('Memory game constructor')
+    console.log('memory game constructor')
   }
 
   connectedCallback () {
-    console.log('Memory game added.')
+    console.log('memory game added.')
 
     this.launchApp()
 
@@ -21,11 +22,14 @@ export class MemoryGame extends AppWindow {
   }
 
   disconnectedCallback () {
-    console.log('Custom element removed from page.')
+    console.log('custom element removed from page.')
   }
 
   launchApp () {
     const gameWindow = document.createElement('div')
-    super.appWindow.appendChild(gameWindow)
+    gameWindow.classList.add('app-window')
+    dragAndDrop.makeDraggable(gameWindow)
+
+    document.getElementById('desktop').appendChild(gameWindow)
   }
 }
