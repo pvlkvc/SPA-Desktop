@@ -7,9 +7,9 @@ let currentlyDragged
  * @param { HTMLElement } htmlEl DOM element to be dragged
  */
 function makeDraggable (htmlEl) {
-  htmlEl.addEventListener('dragstart', (event) => {
-    console.log('DRAG START', event)
+  htmlEl.setAttribute('draggable', true)
 
+  htmlEl.addEventListener('dragstart', (event) => {
     currentlyDragged = event.target
 
     // Get original position
@@ -23,7 +23,6 @@ function makeDraggable (htmlEl) {
 
     // Save the position in the dataTransfer
     event.dataTransfer.setData('application/json', JSON.stringify(start))
-    console.log('Start position', start)
   })
 }
 
@@ -33,22 +32,18 @@ function makeDraggable (htmlEl) {
  */
 function makeDropZone (htmlEl) {
   htmlEl.addEventListener('dragenter', (event) => {
-    console.log('DRAG ENTER DROP ZONE', event)
+    event.preventDefault()
   })
 
   htmlEl.addEventListener('dragover', (event) => {
-    console.log('DRAG OVER DROP ZONE', event)
     event.preventDefault()
   })
 
   htmlEl.addEventListener('drop', (event) => {
-    console.log('DROPPED ON DROP ZONE', event)
-
     // Get the position of the dragged element and where the drop was
     const start = JSON.parse(event.dataTransfer.getData('application/json'))
     const dropX = event.clientX
     const dropY = event.clientY
-    console.log('Drop position', [dropX, dropY])
 
     // Move element position from start to drop
     currentlyDragged.style.left = (dropX + start.posX) + 'px'
