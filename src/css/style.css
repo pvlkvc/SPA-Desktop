@@ -1,16 +1,15 @@
 @import url('taskbar.css');
 @import url('desktop.css');
+@import url('header.css');
+@import url('appWindow.css');
 
 body {
   margin: 0;
+  display: flex;
+  flex-flow: column;
   overflow-y: hidden;
 }
 
 .color {
   background-color: pink;
-}
-
-.desktop {
-  width: 400px;
-  height: 200px;
 }

@@ -3,7 +3,11 @@ footer {
   flex-direction: row;
   justify-content: space-between;
   height: 70px;
-  background-color: aliceblue;
+  width: 100%;
+  background-color: rgb(75, 100, 122);
+
+  position: absolute;
+  bottom:0;
 }
 
 .taskbar {

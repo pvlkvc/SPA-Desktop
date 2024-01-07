@@ -1,6 +1,13 @@
-export class MemoryGame extends HTMLElement {
+import { AppWindow } from './appWindow'
+
+export class MemoryGame extends AppWindow {
   images = ['./img/pet-1.png', './img/pet-2.png', './img/pet-3.png', './img/pet-4.png',
     './img/pet-5.png', './img/pet-6.png', './img/pet-7.png', './img/pet-8.png']
+
+  constructor () {
+    super()
+    console.log('Memory game constructor')
+  }
 
   connectedCallback () {
     console.log('Memory game added.')
@@ -19,6 +26,6 @@ export class MemoryGame extends HTMLElement {
 
   launchApp () {
     const gameWindow = document.createElement('div')
-    document.getElementById()
+    super.appWindow.appendChild(gameWindow)
   }
 }
