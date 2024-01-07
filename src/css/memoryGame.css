@@ -9,3 +9,8 @@
   background-color: palevioletred;
   margin: 5px;
 }
+
+.memory-card-image {
+  height: 100%;
+  width: auto;
+}

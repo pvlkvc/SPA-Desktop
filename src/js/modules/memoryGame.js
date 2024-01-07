@@ -41,7 +41,7 @@ export class MemoryGame extends AppWindow {
   #getGameImages (images) {
     const array = []
 
-    for (let i = 0; i > images / 2; i++) {
+    for (let i = 0; i < images / 2; i++) {
       array[2 * i] = i + 1
       array[2 * i + 1] = i + 1
     }
@@ -62,15 +62,23 @@ export class MemoryGame extends AppWindow {
    */
   #getGameboard () {
     const gameboard = document.createElement('div')
+    let index = 0
 
     for (let i = 0; i < this.#height; i++) {
       const row = document.createElement('div')
       row.classList.add('memory-row')
       gameboard.appendChild(row)
-      for (let i = 0; i < this.#width; i++) {
+      for (let j = 0; j < this.#width; j++) {
         const card = document.createElement('div')
         card.classList.add('memory-card')
+
+        const image = document.createElement('img')
+        image.classList.add('memory-card-image')
+        image.setAttribute('src', './img/pet-' + this.#images[index] + '.png')
+        card.appendChild(image)
+
         row.appendChild(card)
+        index++
       }
     }
 
