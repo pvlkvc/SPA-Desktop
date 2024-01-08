@@ -5,8 +5,8 @@ export class MemoryGame extends AppWindow {
   #images
   #width = 4
   #height = 4
-  firstFlip
-  gameboard
+  #firstFlip
+  #gameboard
 
   constructor () {
     super()
@@ -31,7 +31,7 @@ export class MemoryGame extends AppWindow {
     this.#getGameImages(this.#width * this.#height)
 
     this.#getGameboard()
-    gameWindow.appendChild(this.gameboard)
+    gameWindow.appendChild(this.#gameboard)
 
     document.getElementById('desktop').appendChild(gameWindow)
   }
@@ -62,13 +62,13 @@ export class MemoryGame extends AppWindow {
    * Creates a gameboard for the upcoming game.
    */
   #getGameboard () {
-    this.gameboard = document.createElement('div')
+    this.#gameboard = document.createElement('div')
     let index = 0
 
     for (let i = 0; i < this.#height; i++) {
       const row = document.createElement('div')
       row.classList.add('memory-row')
-      this.gameboard.appendChild(row)
+      this.#gameboard.appendChild(row)
       for (let j = 0; j < this.#width; j++) {
         const card = document.createElement('div')
         card.classList.add('memory-card')
@@ -93,28 +93,28 @@ export class MemoryGame extends AppWindow {
     flipped.classList.remove('invisible')
     flipped.classList.add('visible')
 
-    if (!this.firstFlip) {
+    if (!this.#firstFlip) {
       console.log('this is first flip')
-      this.firstFlip = flipped
+      this.#firstFlip = flipped
       // return
     } else {
-      if (this.firstFlip === flipped) return
+      if (this.#firstFlip === flipped) return
 
-      const id1 = this.firstFlip.getAttribute('image-id')
+      const id1 = this.#firstFlip.getAttribute('image-id')
       const id2 = flipped.getAttribute('image-id')
 
-      this.gameboard.classList.add('unclickable')
+      this.#gameboard.classList.add('unclickable')
 
       setTimeout(() => {
         if (id1 !== id2) {
-          this.firstFlip.classList.add('invisible')
+          this.#firstFlip.classList.add('invisible')
           flipped.classList.add('invisible')
-          this.firstFlip.classList.remove('visible')
+          this.#firstFlip.classList.remove('visible')
           flipped.classList.remove('visible')
         }
 
-        this.firstFlip = null
-        this.gameboard.classList.remove('unclickable')
+        this.#firstFlip = null
+        this.#gameboard.classList.remove('unclickable')
       }, 1500)
     }
   }
