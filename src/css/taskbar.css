@@ -1,41 +1,32 @@
-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 70px;
-  width: 100%;
-  background-color: rgb(75, 100, 122);
-
-  position: absolute;
-  bottom:0;
-}
-
 .taskbar {
   display: flex;
-  flex-direction: row;
-  justify-content: start;
-  background-color: rgb(147, 177, 147);
+  flex-direction: column;
+  justify-content: center;
+  width: 70px;
+  height: 100vh;
+  gap: 15px;
+  background-color: rgb(118, 75, 122);
 }
 
-footer img {
-  max-height: 100%;
-  width: auto;
+.taskbar img {
+  max-width: 100%;
+  height: auto;
 }
 
-footer .button {
+.taskbar .button {
   height: 100%;
   background-color: blueviolet;
   width: fit-content;
 }
 
-footer .button:hover {
+.taskbar .button:hover {
   background-color: rgba(0, 0, 0, 0.171);
 }
 
-footer a:active .button {
+.taskbar a:active .button {
   background-color: brown;
 }
 
-footer a {
+.taskbar a {
   max-width: 70px;
 }

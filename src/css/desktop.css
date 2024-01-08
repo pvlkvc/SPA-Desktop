@@ -1,6 +1,5 @@
 main .desktop {
-  width: 100%;
-  max-height: 92vh;
-  height: 92vh;
-  background-color: peachpuff;
+  width: calc(100% - 70px);
+  height: 100vh;
+  background-color: rgb(252, 214, 251);
 }

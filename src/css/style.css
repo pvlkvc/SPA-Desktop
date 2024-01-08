@@ -7,10 +7,11 @@
 body {
   margin: 0;
   display: flex;
-  flex-flow: column;
-  overflow-y: hidden;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.color {
-  background-color: pink;
+main {
+  display: flex;
+  flex-direction: row;
 }
