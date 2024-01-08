@@ -17,6 +17,10 @@ export class AppWindow extends HTMLElement {
     const closeButton = document.createElement('div')
     closeButton.classList.add('close-button')
     windowNavbar.appendChild(closeButton)
+    closeButton.addEventListener('click', () => {
+      this.appBox.remove()
+      this.remove()
+    })
 
     document.getElementById('desktop').appendChild(this.appBox)
 

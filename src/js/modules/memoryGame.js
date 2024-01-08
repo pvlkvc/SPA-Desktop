@@ -19,7 +19,7 @@ export class MemoryGame extends AppWindow {
   }
 
   disconnectedCallback () {
-    console.log('custom element removed from page.')
+    console.log('memory game removed.')
   }
 
   launchApp () {
