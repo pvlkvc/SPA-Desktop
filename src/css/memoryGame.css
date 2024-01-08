@@ -8,6 +8,7 @@
   width: 50px;
   background-color: palevioletred;
   margin: 5px;
+  background-image: url();
 }
 
 .memory-card-image {
@@ -15,10 +16,16 @@
   width: auto;
 }
 
-.memory-card-image-covered {
-  opacity: 20%;
+.visible {
+  opacity: 100%;
+  transition: 0.2s linear all;
 }
 
-.memory-card-image-uncovered {
-  opacity: 100%;
+.invisible {
+  opacity: 20%;
+  transition: 0.2s linear all;
+}
+
+.unclickable {
+  pointer-events: none;
 }

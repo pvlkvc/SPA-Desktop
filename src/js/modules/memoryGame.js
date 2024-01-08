@@ -5,6 +5,8 @@ export class MemoryGame extends AppWindow {
   #images
   #width = 4
   #height = 4
+  firstFlip
+  gameboard
 
   constructor () {
     super()
@@ -28,8 +30,8 @@ export class MemoryGame extends AppWindow {
 
     this.#getGameImages(this.#width * this.#height)
 
-    const gameboard = this.#getGameboard()
-    gameWindow.appendChild(gameboard)
+    this.#getGameboard()
+    gameWindow.appendChild(this.gameboard)
 
     document.getElementById('desktop').appendChild(gameWindow)
   }
@@ -57,37 +59,63 @@ export class MemoryGame extends AppWindow {
   }
 
   /**
-   * Creates and returns a gameboard for the upcoming game.
-   * @returns { HTMLElement } gameboard populated with cards
+   * Creates a gameboard for the upcoming game.
    */
   #getGameboard () {
-    const gameboard = document.createElement('div')
+    this.gameboard = document.createElement('div')
     let index = 0
 
     for (let i = 0; i < this.#height; i++) {
       const row = document.createElement('div')
       row.classList.add('memory-row')
-      gameboard.appendChild(row)
+      this.gameboard.appendChild(row)
       for (let j = 0; j < this.#width; j++) {
         const card = document.createElement('div')
         card.classList.add('memory-card')
 
         const image = document.createElement('img')
-        image.classList.add('memory-card-image')
-        image.classList.add('memory-card-image-covered')
+        image.classList.add('memory-card-image', 'invisible')
         image.setAttribute('src', './img/pet-' + this.#images[index] + '.png')
+        image.setAttribute('image-id', this.#images[index])
         card.appendChild(image)
 
         card.addEventListener('click', () => {
-          image.classList.add('memory-card-image-uncovered')
-          image.classList.remove('memory-card-image-covered')
+          this.#handleCardFlip(image)
         })
 
         row.appendChild(card)
         index++
       }
     }
+  }
 
-    return gameboard
+  #handleCardFlip (flipped) {
+    flipped.classList.remove('invisible')
+    flipped.classList.add('visible')
+
+    if (!this.firstFlip) {
+      console.log('this is first flip')
+      this.firstFlip = flipped
+      // return
+    } else {
+      if (this.firstFlip === flipped) return
+
+      const id1 = this.firstFlip.getAttribute('image-id')
+      const id2 = flipped.getAttribute('image-id')
+
+      this.gameboard.classList.add('unclickable')
+
+      setTimeout(() => {
+        if (id1 !== id2) {
+          this.firstFlip.classList.add('invisible')
+          flipped.classList.add('invisible')
+          this.firstFlip.classList.remove('visible')
+          flipped.classList.remove('visible')
+        }
+
+        this.firstFlip = null
+        this.gameboard.classList.remove('unclickable')
+      }, 1500)
+    }
   }
 }
