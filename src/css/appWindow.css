@@ -5,4 +5,20 @@
   height: fit-content;
   width: fit-content;
   background-color: blue;
+  border: solid black 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.window-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  border-bottom: solid black 2px;
+}
+
+.close-button {
+  height: 30px;
+  width: 30px;
+  background-color: red;
 }

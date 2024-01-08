@@ -1,5 +1,4 @@
 import { AppWindow } from './appWindow'
-import * as dragAndDrop from './dragAndDrop.js'
 
 export class MemoryGame extends AppWindow {
   #images
@@ -25,15 +24,12 @@ export class MemoryGame extends AppWindow {
 
   launchApp () {
     const gameWindow = document.createElement('div')
-    gameWindow.classList.add('app-window')
-    dragAndDrop.makeDraggable(gameWindow)
 
     this.#getGameImages(this.#width * this.#height)
-
     this.#getGameboard()
     gameWindow.appendChild(this.#gameboard)
 
-    document.getElementById('desktop').appendChild(gameWindow)
+    this.appBox.appendChild(gameWindow)
   }
 
   /**
@@ -63,6 +59,7 @@ export class MemoryGame extends AppWindow {
    */
   #getGameboard () {
     this.#gameboard = document.createElement('div')
+    this.#gameboard.classList.add('gameboard')
     let index = 0
 
     for (let i = 0; i < this.#height; i++) {
@@ -105,17 +102,20 @@ export class MemoryGame extends AppWindow {
 
       this.#gameboard.classList.add('unclickable')
 
-      setTimeout(() => {
-        if (id1 !== id2) {
+      if (id1 !== id2) {
+        setTimeout(() => {
           this.#firstFlip.classList.add('invisible')
           flipped.classList.add('invisible')
           this.#firstFlip.classList.remove('visible')
           flipped.classList.remove('visible')
-        }
 
+          this.#firstFlip = null
+          this.#gameboard.classList.remove('unclickable')
+        }, 1500)
+      } else {
         this.#firstFlip = null
         this.#gameboard.classList.remove('unclickable')
-      }, 1500)
+      }
     }
   }
 }
