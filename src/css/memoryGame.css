@@ -2,6 +2,12 @@
   margin: 5px;
 }
 
+.memory-game-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .memory-row {
   display: flex;
   flex-direction: row;
@@ -32,4 +38,8 @@
 
 .unclickable {
   pointer-events: none;
+}
+
+.controls-box {
+
 }

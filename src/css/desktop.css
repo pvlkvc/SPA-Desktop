@@ -3,3 +3,9 @@ main .desktop {
   height: 100vh;
   background-color: rgb(252, 214, 251);
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

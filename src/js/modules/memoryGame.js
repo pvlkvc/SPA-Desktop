@@ -15,21 +15,59 @@ export class MemoryGame extends AppWindow {
   connectedCallback () {
     console.log('memory game added.')
 
-    this.launchApp()
+    this.#launchApp()
+    this.#setupMemoryListeners()
   }
 
   disconnectedCallback () {
     console.log('memory game removed.')
   }
 
-  launchApp () {
-    const gameWindow = document.createElement('div')
+  #launchApp () {
+    const menu = document.createElement('div')
+    menu.setAttribute('id', 'memoryMenu')
 
-    this.#getGameImages(this.#width * this.#height)
-    this.#getGameboard()
-    gameWindow.appendChild(this.#gameboard)
+    const text = document.createElement('p')
+    text.textContent = 'Press a button to start a new game'
+    menu.appendChild(text)
 
-    this.appBox.appendChild(gameWindow)
+    // buttons container
+    const buttonRow = document.createElement('div')
+    buttonRow.classList.add('row')
+    menu.appendChild(buttonRow)
+
+    // creating the buttons
+    const dimA = document.createElement('input')
+    dimA.classList.add('app-window-button')
+    dimA.setAttribute('type', 'submit')
+    const dimB = dimA.cloneNode(true)
+    const dimC = dimA.cloneNode(true)
+
+    // assigning names to buttons
+    dimA.setAttribute('value', '2x2')
+    dimB.setAttribute('value', '2x4')
+    dimC.setAttribute('value', '4x4')
+
+    // buttons listeners
+    dimA.addEventListener('click', () => {
+      menu.remove()
+      this.#launchGame()
+    })
+    dimB.addEventListener('click', () => {
+      menu.remove()
+      this.#launchGame()
+    })
+    dimC.addEventListener('click', () => {
+      menu.remove()
+      this.#launchGame()
+    })
+
+    // adding buttons to the website
+    buttonRow.appendChild(dimA)
+    buttonRow.appendChild(dimB)
+    buttonRow.appendChild(dimC)
+
+    this.appBox.appendChild(menu)
   }
 
   /**
@@ -118,4 +156,54 @@ export class MemoryGame extends AppWindow {
       }
     }
   }
+
+  #launchGame () {
+    const gameWindow = document.createElement('div')
+    gameWindow.setAttribute('id', 'memoryGame')
+    gameWindow.classList.add('memory-game-window')
+
+    this.#getGameImages(this.#width * this.#height)
+    this.#getGameboard()
+    gameWindow.appendChild(this.#gameboard)
+
+    // controls info
+    const cBox = document.createElement('div')
+    cBox.classList.add('controls-box')
+    const cText = document.createElement('p')
+    cText.textContent = 'ADD CONTROLS HERE ONCE I ACTUALLY DECIDE AND IMPLEMENT THEM'
+    cBox.appendChild(cText)
+    gameWindow.appendChild(cBox)
+
+    // restart button
+    const restartButton = document.createElement('input')
+    restartButton.classList.add('app-window-button')
+    restartButton.setAttribute('type', 'submit')
+    restartButton.setAttribute('value', 'New Game')
+    restartButton.setAttribute('id', 'memoryRestart')
+    restartButton.addEventListener('click', () => {
+      this.appBox.removeChild(gameWindow)
+      this.#launchGame()
+    })
+    gameWindow.appendChild(restartButton)
+
+    this.appBox.appendChild(gameWindow)
+  }
+
+  #setupMemoryListeners () {
+    document.addEventListener('keypress', function (event) {
+        const memoryGame = document.getElementById('memoryGame')
+        const memoryMenu = document.getElementById('memoryMenu')
+
+        if (memoryMenu != null) {
+            console.log('memory menu keyboard press')
+        }
+        if (memoryGame != null) {
+          if (event.key === 'r' || event.key === 'R') {
+            event.preventDefault()
+            document.getElementById('memoryRestart').click()
+          }
+            console.log('memory game keyboard press')
+        }
+    })
+}
 }
