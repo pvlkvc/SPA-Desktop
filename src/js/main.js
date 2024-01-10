@@ -11,6 +11,7 @@ const desktop = document.getElementById('desktop')
 const memoryGameButton = document.getElementById('buttonA')
 const chatButton = document.getElementById('buttonB')
 
+
 // prepare desktop as a dropzone
 dap.makeDropZone(desktop)
 

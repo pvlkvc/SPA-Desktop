@@ -3,6 +3,7 @@
 @import url('header.css');
 @import url('appWindow.css');
 @import url('memoryGame.css');
+@import url('chat.css');
 
 body {
   margin: 0;
@@ -14,4 +15,16 @@ body {
 main {
   display: flex;
   flex-direction: row;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
