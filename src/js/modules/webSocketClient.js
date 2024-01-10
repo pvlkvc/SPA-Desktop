@@ -10,20 +10,17 @@ export function connect (url) {
     // Handler for when the connection is opened
     websocket.onopen = () => {
         console.log('web socket is open: ', websocket)
-        outputLog('The websocket is now open.')
     }
 
     // Handler for when the message is received
     websocket.onmessage = (event) => {
         console.log('web socket received message: ' + event.data)
         console.log(event)
-        outputLog('Server said: ' + event.data)
     }
 
     // Handler for when the socket is closed
     websocket.onclose = () => {
         console.log('web socket is closed')
-        outputLog('Websocket is now closed.')
     }
 }
 
@@ -34,7 +31,6 @@ export function close () {
     console.log('web socket will be closed')
     websocket.send('Client closing connection by intention.')
     websocket.close()
-    outputLog('Prepare to close websocket.')
 }
 
 /**
@@ -46,6 +42,5 @@ export function send (messageText) {
     } else {
         websocket.send(messageText)
         console.log('sending message via web socket: ' + messageText)
-        outputLog('You said: ' + messageText)
     }
 }
