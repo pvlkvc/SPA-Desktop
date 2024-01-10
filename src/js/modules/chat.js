@@ -2,6 +2,7 @@ import { AppWindow } from './appWindow'
 
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
+  #username = "Anna"
   #websocket
 
   constructor () {
@@ -80,7 +81,10 @@ export class Chat extends AppWindow {
     this.#websocket.onmessage = (event) => {
         console.log('web socket received message: ' + event.data)
         console.log(event)
-        this.#messageReceived(JSON.parse(event.data))
+        const parsed = JSON.parse(event.data)
+        if (parsed.type == "message") {
+          this.#messageReceived(parsed)
+        }
     }
 
     this.#websocket.onclose = () => {
@@ -95,12 +99,20 @@ export class Chat extends AppWindow {
   }
 
   #sendMessage (messageText) {
+    const body = {
+      type: "message",
+      data : messageText,
+      username: this.#username,
+      channel: "my, not so secret, channel2",
+      key: "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd"
+    }
+    const response = JSON.stringify(body)
     // todo: put key/username etc. into json
 
     if (!this.#websocket || this.#websocket.readyState !== 1) {
       console.log('The websocket is not open.')
     } else {
-      this.#websocket.send(messageText)
+      this.#websocket.send(response)
       console.log('sending message: ' + messageText)
     }
   }
