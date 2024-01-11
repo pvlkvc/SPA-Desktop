@@ -25,6 +25,7 @@ export class MemoryGame extends AppWindow {
 
   #launchApp () {
     const menu = document.createElement('div')
+    menu.classList.add('memory-game-menu')
     menu.setAttribute('id', 'memoryMenu')
 
     const text = document.createElement('p')

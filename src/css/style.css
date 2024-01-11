@@ -14,7 +14,7 @@ body {
   font-weight: bold;
 }
 
-main {
+pwd-desktop {
   display: flex;
   flex-direction: row;
 }

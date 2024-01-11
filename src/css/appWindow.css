@@ -1,9 +1,12 @@
 .app-window {
-  position: relative;
-  top: 0;
-  left: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
   height: fit-content;
   width: fit-content;
+  min-width: 200px;
+  min-height: 200px;
   background-color: blue;
   border: solid black 2px;
   display: flex;

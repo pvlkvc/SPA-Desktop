@@ -1,3 +1,11 @@
+.memory-game-menu {
+
+}
+
+.memory-game-menu p {
+  text-wrap: nowrap;
+}
+
 .gameboard {
   margin: 5px;
 }

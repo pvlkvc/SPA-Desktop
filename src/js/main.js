@@ -1,31 +1,12 @@
-import * as dap from './modules/DragAndDrop.js'
-import * as MemoryGame from './modules/MemoryGame.js'
-import * as Chat from './modules/Chat.js'
+import * as memoryGame from './modules/MemoryGame.js'
+import * as chat from './modules/Chat.js'
+import * as desktop from './modules/Desktop.js'
 
 // custom elements
-window.customElements.define('memory-game', MemoryGame.MemoryGame)
-window.customElements.define('chat-app', Chat.Chat)
+window.customElements.define('memory-game', memoryGame.MemoryGame)
+window.customElements.define('chat-app', chat.Chat)
+window.customElements.define('pwd-desktop', desktop.Desktop)
 
-// constants
-const desktop = document.getElementById('desktop')
-const memoryGameButton = document.getElementById('buttonA')
-const chatButton = document.getElementById('buttonB')
-
-
-// prepare desktop as a dropzone
-dap.makeDropZone(desktop)
-
-// buttons listeners
-memoryGameButton.addEventListener('click', () => {
-  console.log('memory button clicked')
-
-  const memory = document.createElement('memory-game')
-  desktop.appendChild(memory)
-})
-
-chatButton.addEventListener('click', () => {
-  console.log('chat button clicked')
-
-  const chat = document.createElement('chat-app')
-  desktop.appendChild(chat)
-})
+const desktopEl = document.createElement('pwd-desktop')
+desktopEl.setAttribute('id', 'pwd-desktop')
+document.getElementById('body').appendChild(desktopEl)

@@ -1,11 +1,5 @@
-main .desktop {
-  width: calc(100% - 70px);
+pwd-desktop .desktop {
+  width: 100vw;
   height: 100vh;
   background-color: rgb(252, 214, 251);
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
 }
