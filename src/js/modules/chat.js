@@ -13,11 +13,7 @@ export class Chat extends AppWindow {
   connectedCallback () {
     console.log('chat game added.')
 
-
-
-    this.#buildChat()
-
-    this.#openSocket()
+    this.#buildMenu()
   }
 
   disconnectedCallback () {
@@ -26,13 +22,44 @@ export class Chat extends AppWindow {
   }
 
   #buildMenu () {
-    
+    const menu = document.createElement('div')
+    menu.classList.add('chat-menu')
+
+    const usernameInput = document.createElement('input')
+    usernameInput.setAttribute('placeholder', 'username')
+    usernameInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        if (usernameInput.value != '') {
+          loginButton.click()
+        } else {
+          if (!document.getElementById('chat-login-error')) {
+            const errorMessage = document.createElement('p')
+            errorMessage.setAttribute('id', 'chat-login-error')
+            errorMessage.textContent = 'You need to enter a username!'
+            menu.appendChild(errorMessage)
+          }
+        }
+      }
+    })
+    menu.appendChild(usernameInput)
+
+    const loginButton = document.createElement('input')
+    loginButton.setAttribute('type', 'submit')
+    loginButton.setAttribute('value', 'Enter chat')
+    loginButton.addEventListener('click', () => {
+      this.#username = usernameInput.value
+      menu.remove()
+      this.#openSocket()
+      this.#buildChat()
+    })
+    menu.appendChild(loginButton)
+
+    this.appBox.appendChild(menu)
   }
 
   #buildChat () {
     const chatContainer = document.createElement('div')
     chatContainer.classList.add('column')
-    this.appBox.appendChild(chatContainer)
 
     const chatBox = document.createElement('div')
     chatBox.setAttribute('id', 'chatBox')
@@ -46,6 +73,11 @@ export class Chat extends AppWindow {
     const sendTextbox = document.createElement('textarea')
     sendTextbox.classList.add('chat-send-textbox')
     sendRow.appendChild(sendTextbox)
+    sendTextbox.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        sendButton.click()
+      }
+    })
 
     const sendButton = document.createElement('input')
     sendButton.classList.add('chat-send-button')
@@ -53,8 +85,11 @@ export class Chat extends AppWindow {
     sendButton.setAttribute('value', 'Send')
     sendButton.addEventListener('click', () => {
       this.#sendMessage(sendTextbox.value)
+      sendTextbox.value = ''
     })
     sendRow.appendChild(sendButton)
+
+    this.appBox.appendChild(chatContainer)
   }
 
   #handleNewMessage (parsed) {
@@ -83,7 +118,10 @@ export class Chat extends AppWindow {
   }
 
   #chatLog (msgRow, msg) {
-
+    const logText = document.createElement('p')
+    logText.classList.add('chat-log-text')
+    logText.textContent = msg
+    msgRow.appendChild(logText)
   }
 
   #openSocket () {
