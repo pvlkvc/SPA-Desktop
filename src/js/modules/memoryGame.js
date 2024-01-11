@@ -57,9 +57,9 @@ export class MemoryGame extends AppWindow {
     dimC.setAttribute('value', '4x4')
 
     // buttons listeners
-    dimA.addEventListener('click', () => { this.#gameStart() })
-    dimB.addEventListener('click', () => { this.#gameStart() })
-    dimC.addEventListener('click', () => { this.#gameStart() })
+    dimA.addEventListener('click', () => { this.#gameStart(2, 2) })
+    dimB.addEventListener('click', () => { this.#gameStart(2, 4) })
+    dimC.addEventListener('click', () => { this.#gameStart(4, 4) })
 
     // adding buttons to the website
     buttonRow.appendChild(dimA)
@@ -72,8 +72,10 @@ export class MemoryGame extends AppWindow {
   /**
    * Advances from the menu to the game.
    */
-  #gameStart () {
+  #gameStart (w, h) {
     this.gameStarted = true
+    this.#width = w
+    this.#height = h
     this.appBox.removeChild(this.appBox.lastChild)
     this.#createGame()
   }
@@ -273,14 +275,13 @@ export class MemoryGame extends AppWindow {
   }
 
   selectLeft () {
-    if (this.selectedTileIndex > (~~(this.selectedTileIndex / this.#height)) * this.#width) {
+    if (this.selectedTileIndex > (~~(this.selectedTileIndex / this.#width)) * this.#width) {
       this.#selectTile(this.selectedTileIndex - 1)
     }
   }
 
   selectRight () {
-    console.log((~~(this.selectedTileIndex / this.#height) + 1) * this.#width)
-    if (this.selectedTileIndex + 1 < (~~(this.selectedTileIndex / this.#height) + 1) * this.#width) {
+    if (this.selectedTileIndex + 1 < (~~(this.selectedTileIndex / this.#width) + 1) * this.#width) {
       this.#selectTile(this.selectedTileIndex + 1)
     }
   }
