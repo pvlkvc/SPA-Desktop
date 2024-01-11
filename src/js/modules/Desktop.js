@@ -4,6 +4,7 @@ export class Desktop extends HTMLElement {
     #desktop
     #appOffset = 90
     #topZ = 5
+    #focused
 
     constructor () {
         super()
@@ -43,6 +44,18 @@ export class Desktop extends HTMLElement {
         taskbar.appendChild(button)
 
         dap.makeDropZone(this.#desktop)
+
+        // sending events over to the focused app
+        document.addEventListener('keypress', (e) => {
+            if (this.#focused) {
+                this.#focused.dispatchEvent(new KeyboardEvent('keypress', {'key': e.key}))
+            }
+        })
+        document.addEventListener('keydown', (e) => {
+            if (this.#focused) {
+                this.#focused.dispatchEvent(new KeyboardEvent('keydown', {'key': e.key}))
+            }
+        })
     }
 
     #createButton (iconPath) {
@@ -67,12 +80,18 @@ export class Desktop extends HTMLElement {
         app.appBox.style.top = this.#appOffset + 'px'
         this.#appOffset += 10
 
+        // focused on creating
+        app.appBox.style.zIndex = ++this.#topZ
+        this.#focused = app
+
         // focused on click
         app.appBox.addEventListener('click', (event) => {
             app.appBox.style.zIndex = ++this.#topZ
+            this.#focused = app
         })
         app.appBox.addEventListener('drag', (event) => {
             app.appBox.style.zIndex = ++this.#topZ
+            this.#focused = app
         })
 
         this.#desktop.appendChild(app)

@@ -48,6 +48,10 @@
   pointer-events: none;
 }
 
+.memory-card-selected {
+  background-color: red;
+}
+
 .controls-box {
 
 }

@@ -5,7 +5,11 @@ export class MemoryGame extends AppWindow {
   #width = 4
   #height = 4
   #firstFlip
-  #gameboard
+  gameboard
+  gameStarted = false
+  selectedTileIndex
+  selectedTile
+  #tileElements = []
 
   constructor () {
     super()
@@ -15,18 +19,20 @@ export class MemoryGame extends AppWindow {
   connectedCallback () {
     console.log('memory game added.')
 
-    this.#launchApp()
-    this.#setupMemoryListeners()
+    this.#createMenu()
+    this.#setupKeyboardListeners()
   }
 
   disconnectedCallback () {
     console.log('memory game removed.')
   }
 
-  #launchApp () {
+  /**
+   * Creates the main menu.
+   */
+  #createMenu () {
     const menu = document.createElement('div')
     menu.classList.add('memory-game-menu')
-    menu.setAttribute('id', 'memoryMenu')
 
     const text = document.createElement('p')
     text.textContent = 'Press a button to start a new game'
@@ -50,18 +56,9 @@ export class MemoryGame extends AppWindow {
     dimC.setAttribute('value', '4x4')
 
     // buttons listeners
-    dimA.addEventListener('click', () => {
-      menu.remove()
-      this.#launchGame()
-    })
-    dimB.addEventListener('click', () => {
-      menu.remove()
-      this.#launchGame()
-    })
-    dimC.addEventListener('click', () => {
-      menu.remove()
-      this.#launchGame()
-    })
+    dimA.addEventListener('click', () => { this.#gameStart() })
+    dimB.addEventListener('click', () => { this.#gameStart() })
+    dimC.addEventListener('click', () => { this.#gameStart() })
 
     // adding buttons to the website
     buttonRow.appendChild(dimA)
@@ -72,10 +69,56 @@ export class MemoryGame extends AppWindow {
   }
 
   /**
+   * Advances from the menu to the game.
+   */
+  #gameStart () {
+    this.gameStarted = true
+    this.appBox.removeChild(this.appBox.lastChild)
+    this.#createGame()
+  }
+
+  /**
+   * Creates the game element.
+   */
+  #createGame () {
+    const gameWindow = document.createElement('div')
+    gameWindow.setAttribute('id', 'memoryGame')
+    gameWindow.classList.add('memory-game-window')
+
+    // the actual game
+    this.#shuffleGameImages(this.#width * this.#height)
+    this.#createGameboard()
+    gameWindow.appendChild(this.gameboard)
+
+    // controls info
+    const cBox = document.createElement('div')
+    cBox.classList.add('controls-box')
+    const cText = document.createElement('p')
+    cText.textContent = 'ADD CONTROLS HERE ONCE I ACTUALLY DECIDE AND IMPLEMENT THEM'
+    cBox.appendChild(cText)
+    gameWindow.appendChild(cBox)
+
+    // restart button
+    const restartButton = document.createElement('input')
+    restartButton.classList.add('app-window-button')
+    restartButton.setAttribute('type', 'submit')
+    restartButton.setAttribute('value', 'New Game')
+    restartButton.setAttribute('id', 'memoryRestart')
+    restartButton.addEventListener('click', () => {
+      this.appBox.removeChild(gameWindow)
+      this.#createGame()
+    })
+    gameWindow.appendChild(restartButton)
+
+    // placing this all inside the app window
+    this.appBox.appendChild(gameWindow)
+  }
+
+  /**
    * Shuffles the image ids for the game.
    * @param { number } images number of images in the game
    */
-  #getGameImages (images) {
+  #shuffleGameImages (images) {
     const array = []
 
     for (let i = 0; i < images / 2; i++) {
@@ -96,15 +139,15 @@ export class MemoryGame extends AppWindow {
   /**
    * Creates a gameboard for the upcoming game.
    */
-  #getGameboard () {
-    this.#gameboard = document.createElement('div')
-    this.#gameboard.classList.add('gameboard')
+  #createGameboard () {
+    this.gameboard = document.createElement('div')
+    this.gameboard.classList.add('gameboard')
     let index = 0
 
     for (let i = 0; i < this.#height; i++) {
       const row = document.createElement('div')
       row.classList.add('memory-row')
-      this.#gameboard.appendChild(row)
+      this.gameboard.appendChild(row)
       for (let j = 0; j < this.#width; j++) {
         const card = document.createElement('div')
         card.classList.add('memory-card')
@@ -116,95 +159,126 @@ export class MemoryGame extends AppWindow {
         card.appendChild(image)
 
         card.addEventListener('click', () => {
-          this.#handleCardFlip(image)
+          this.#handleCardFlip(card)
         })
+
+        // keep an array of elements corresponding to cards for easier access
+        this.#tileElements.push(card)
 
         row.appendChild(card)
         index++
       }
     }
+
+    this.#selectTile(0)
   }
 
+  /**
+   * Decides the outcome after flipping a card.
+   * @param {} flipped recently flipped card
+   * @returns true if two flipped cards match
+   */
   #handleCardFlip (flipped) {
-    flipped.classList.remove('invisible')
-    flipped.classList.add('visible')
+    const flippedImage = flipped.lastChild
+
+    flippedImage.classList.remove('invisible')
+    flippedImage.classList.add('visible')
 
     if (!this.#firstFlip) {
       console.log('this is first flip')
-      this.#firstFlip = flipped
+      this.#firstFlip = flippedImage
       // return
     } else {
-      if (this.#firstFlip === flipped) return
+      if (this.#firstFlip === flippedImage) return
 
       const id1 = this.#firstFlip.getAttribute('image-id')
-      const id2 = flipped.getAttribute('image-id')
+      const id2 = flippedImage.getAttribute('image-id')
 
-      this.#gameboard.classList.add('unclickable')
+      this.gameboard.classList.add('unclickable')
 
       if (id1 !== id2) {
         setTimeout(() => {
           this.#firstFlip.classList.add('invisible')
-          flipped.classList.add('invisible')
+          flippedImage.classList.add('invisible')
           this.#firstFlip.classList.remove('visible')
-          flipped.classList.remove('visible')
+          flippedImage.classList.remove('visible')
 
           this.#firstFlip = null
-          this.#gameboard.classList.remove('unclickable')
+          this.gameboard.classList.remove('unclickable')
         }, 1500)
       } else {
         this.#firstFlip = null
-        this.#gameboard.classList.remove('unclickable')
+        this.gameboard.classList.remove('unclickable')
       }
     }
   }
 
-  #launchGame () {
-    const gameWindow = document.createElement('div')
-    gameWindow.setAttribute('id', 'memoryGame')
-    gameWindow.classList.add('memory-game-window')
-
-    this.#getGameImages(this.#width * this.#height)
-    this.#getGameboard()
-    gameWindow.appendChild(this.#gameboard)
-
-    // controls info
-    const cBox = document.createElement('div')
-    cBox.classList.add('controls-box')
-    const cText = document.createElement('p')
-    cText.textContent = 'ADD CONTROLS HERE ONCE I ACTUALLY DECIDE AND IMPLEMENT THEM'
-    cBox.appendChild(cText)
-    gameWindow.appendChild(cBox)
-
-    // restart button
-    const restartButton = document.createElement('input')
-    restartButton.classList.add('app-window-button')
-    restartButton.setAttribute('type', 'submit')
-    restartButton.setAttribute('value', 'New Game')
-    restartButton.setAttribute('id', 'memoryRestart')
-    restartButton.addEventListener('click', () => {
-      this.appBox.removeChild(gameWindow)
-      this.#launchGame()
-    })
-    gameWindow.appendChild(restartButton)
-
-    this.appBox.appendChild(gameWindow)
-  }
-
-  #setupMemoryListeners () {
-    document.addEventListener('keypress', function (event) {
-        const memoryGame = document.getElementById('memoryGame')
-        const memoryMenu = document.getElementById('memoryMenu')
-
-        if (memoryMenu != null) {
+  /**
+   * Creates the keyboard event listeners.
+   */
+  #setupKeyboardListeners () {
+    this.addEventListener('keypress', function (event) {
+        if (!this.gameStarted) {
             console.log('memory menu keyboard press')
-        }
-        if (memoryGame != null) {
-          if (event.key === 'r' || event.key === 'R') {
+            // todo this
+        } else {
+          if (event.key == 'r' || event.key == 'R') {
             event.preventDefault()
             document.getElementById('memoryRestart').click()
+          } else if (event.key == 'Enter') {
+            if (!this.gameboard.classList.contains('unclickable')) {
+              this.selectedTile.click()
+            }
           }
-            console.log('memory game keyboard press')
         }
     })
-}
+    this.addEventListener('keydown', function (event) {
+      if (this.gameStarted) {
+        if (event.key == 'ArrowRight') {
+          this.selectRight()
+        } else if (event.key == 'ArrowUp') {
+          this.selectUp()
+        } else if (event.key == 'ArrowLeft') {
+          this.selectLeft()
+        } else if (event.key == 'ArrowDown') {
+          this.selectDown()
+        }
+      }
+  })
+  }
+
+  #selectTile (arrayIndex) {
+    if (this.selectedTile) {
+      this.selectedTile.classList.remove('memory-card-selected')
+    }
+    this.selectedTile = this.#tileElements[arrayIndex]
+    this.selectedTileIndex = arrayIndex
+
+    this.selectedTile.classList.add('memory-card-selected')
+  }
+
+  selectDown () {
+    if (this.selectedTileIndex + this.#width < this.#width * this.#height) {
+      this.#selectTile(this.selectedTileIndex + this.#width)
+    }
+  }
+
+  selectUp () {
+    if (this.selectedTileIndex - this.#width >= 0) {
+      this.#selectTile(this.selectedTileIndex - this.#width)
+    }
+  }
+
+  selectLeft () {
+    if (this.selectedTileIndex > (~~(this.selectedTileIndex / this.#height)) * this.#width) {
+      this.#selectTile(this.selectedTileIndex - 1)
+    }
+  }
+
+  selectRight () {
+    console.log((~~(this.selectedTileIndex / this.#height) + 1) * this.#width)
+    if (this.selectedTileIndex + 1 < (~~(this.selectedTileIndex / this.#height) + 1) * this.#width) {
+      this.#selectTile(this.selectedTileIndex + 1)
+    }
+  }
 }

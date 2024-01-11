@@ -19,7 +19,9 @@ export class Chat extends AppWindow {
 
   disconnectedCallback () {
     console.log('chat removed.')
-    this.#closeSocket()
+    if (this.#websocket) {
+      this.#closeSocket()
+    }
   }
 
   #buildMenu () {
