@@ -1,6 +1,6 @@
-import * as dap from './modules/dragAndDrop.js'
-import * as MemoryGame from './modules/memoryGame.js'
-import * as Chat from './modules/chat.js'
+import * as dap from './modules/DragAndDrop.js'
+import * as MemoryGame from './modules/MemoryGame.js'
+import * as Chat from './modules/Chat.js'
 
 // custom elements
 window.customElements.define('memory-game', MemoryGame.MemoryGame)

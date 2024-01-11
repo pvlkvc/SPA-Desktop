@@ -1,4 +1,4 @@
-import { AppWindow } from './appWindow'
+import { AppWindow } from './AppWindow'
 
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'

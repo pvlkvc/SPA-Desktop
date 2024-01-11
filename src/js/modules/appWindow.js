@@ -1,4 +1,4 @@
-import * as dragAndDrop from './dragAndDrop.js'
+import * as dragAndDrop from './DragAndDrop.js'
 
 export class AppWindow extends HTMLElement {
   appBox

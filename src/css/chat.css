@@ -17,6 +17,7 @@
 .chat-message-row {
     display: flex;
     flex-direction: column;
+    max-width: 200px;
 }
 
 .chat-message-username {
@@ -29,12 +30,14 @@
 .chat-message-text {
     color:black;
     overflow-wrap: break-word;
-    max-width: 200px;
     margin: 0;
 }
 
 .chat-log-text {
     color: grey;
+    margin: 0;
+    text-align: center;
+    overflow-wrap: break-word;
 }
 
 .chat-send-box {

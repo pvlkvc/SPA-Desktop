@@ -1,4 +1,4 @@
-import { AppWindow } from './appWindow'
+import { AppWindow } from './AppWindow'
 
 export class MemoryGame extends AppWindow {
   #images
