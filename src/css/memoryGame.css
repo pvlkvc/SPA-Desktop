@@ -3,6 +3,10 @@
   padding: 10px;
   color: rgb(179, 15, 124);
   text-shadow: 1px 1px 1px rgb(228, 185, 201);
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .memory-menu-button-box {
