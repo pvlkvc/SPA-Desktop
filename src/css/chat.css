@@ -1,14 +1,40 @@
+.chat-menu {
+
+}
+
 .chat-box {
     height: 300px;
     overflow-y: scroll;
+    background-color: rgb(255, 221, 236);
+}
+
+.chat-row {
+    padding: 10px;
+    border: solid rgb(233, 199, 204);
+    border-width: 0px 0px 1px 0px;
 }
 
 .chat-message-row {
+    display: flex;
+    flex-direction: column;
+}
 
+.chat-message-username {
+    color: rgb(224, 7, 188);
+    border: dashed rgb(184, 161, 164);
+    border-width: 0px 0px 1px 0px;
+    margin: 0;
 }
 
 .chat-message-text {
-    
+    color:black;
+    overflow-wrap: break-word;
+    max-width: 200px;
+    margin: 0;
+}
+
+.chat-log-text {
+    color: grey;
 }
 
 .chat-send-box {

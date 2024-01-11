@@ -75,6 +75,7 @@ export class Chat extends AppWindow {
     sendRow.appendChild(sendTextbox)
     sendTextbox.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
+        event.preventDefault()
         sendButton.click()
       }
     })
@@ -84,8 +85,10 @@ export class Chat extends AppWindow {
     sendButton.setAttribute('type', 'submit')
     sendButton.setAttribute('value', 'Send')
     sendButton.addEventListener('click', () => {
-      this.#sendMessage(sendTextbox.value)
+      if (sendTextbox.value != '') {
+        this.#sendMessage(sendTextbox.value)
       sendTextbox.value = ''
+      }
     })
     sendRow.appendChild(sendButton)
 
@@ -95,20 +98,31 @@ export class Chat extends AppWindow {
   #handleNewMessage (parsed) {
     console.log(parsed)
 
+    const chatBox = document.getElementById('chatBox')
+    const atBottom = chatBox.scrollHeight == chatBox.scrollTop + chatBox.offsetHeight
+
     const messageRow = document.createElement('div')
-    messageRow.classList.add('row', 'chat-message-row')
-    document.getElementById('chatBox').appendChild(messageRow)
+    messageRow.classList.add('chat-row')
+    chatBox.appendChild(messageRow)
 
     if (parsed.type == "message") {
       this.#userMessage(messageRow, parsed.username, parsed.data)
     } else if (parsed.type == "notification") {
       this.#chatLog(messageRow, parsed.data)
     }
+
+    console.log(chatBox.scrollHeight, chatBox.scrollTop, chatBox.offsetHeight)
+    if (atBottom) {
+      chatBox.scrollTop = chatBox.scrollHeight - chatBox.offsetHeight
+    }
   }
 
   #userMessage (msgRow, username, msg) {
+    msgRow.classList.add('chat-message-row')
+
     const messageUsername = document.createElement('p')
-    messageUsername.textContent = username + ": "
+    messageUsername.classList.add('chat-message-username')
+    messageUsername.textContent = username
     msgRow.appendChild(messageUsername)
 
     const messageText = document.createElement('p')
@@ -135,7 +149,9 @@ export class Chat extends AppWindow {
         console.log('web socket received message: ' + event.data)
         console.log(event)
         const parsed = JSON.parse(event.data)
-        this.#handleNewMessage(parsed)
+        if (parsed.type != 'heartbeat') {
+          this.#handleNewMessage(parsed)
+        }
     }
 
     this.#websocket.onclose = () => {
