@@ -2,11 +2,12 @@ import { AppWindow } from './AppWindow'
 
 export class MemoryGame extends AppWindow {
   #images
+  gameStarted = false
+  #firstFlip
+  #flippedCards
   #width = 4
   #height = 4
-  #firstFlip
   gameboard
-  gameStarted = false
   selectedTileIndex
   selectedTile
   #tileElements = []
@@ -76,6 +77,11 @@ export class MemoryGame extends AppWindow {
     this.gameStarted = true
     this.#width = w
     this.#height = h
+    this.#flippedCards = Array(w * h)
+    for (let i = 0; i < w * h; i++) {
+      this.#flippedCards[i] = false
+    }
+    console.log(this.#flippedCards)
     this.appBox.removeChild(this.appBox.lastChild)
     this.#createGame()
   }
@@ -154,12 +160,13 @@ export class MemoryGame extends AppWindow {
       this.gameboard.appendChild(row)
       for (let j = 0; j < this.#width; j++) {
         const card = document.createElement('div')
-        card.classList.add('memory-card')
+        card.classList.add('memory-card', 'memory-card-active')
+        card.setAttribute('card-index', index)
+        card.setAttribute('image-id', this.#images[index])
 
         const image = document.createElement('img')
         image.classList.add('memory-card-image', 'invisible')
         image.setAttribute('src', './img/pet-' + this.#images[index] + '.png')
-        image.setAttribute('image-id', this.#images[index])
         image.setAttribute('draggable', 'false')
         card.appendChild(image)
 
@@ -180,7 +187,7 @@ export class MemoryGame extends AppWindow {
 
   /**
    * Decides the outcome after flipping a card.
-   * @param {} flipped recently flipped card
+   * @param { HTMLElement } flipped recently flipped card
    * @returns true if two flipped cards match
    */
   #handleCardFlip (flipped) {
@@ -191,29 +198,37 @@ export class MemoryGame extends AppWindow {
 
     if (!this.#firstFlip) {
       console.log('this is first flip')
-      this.#firstFlip = flippedImage
+      this.#firstFlip = flipped
       // return
     } else {
-      if (this.#firstFlip === flippedImage) return
+      if (this.#firstFlip === flipped) return
 
       const id1 = this.#firstFlip.getAttribute('image-id')
-      const id2 = flippedImage.getAttribute('image-id')
+      const id2 = flipped.getAttribute('image-id')
 
       this.gameboard.classList.add('unclickable')
 
       if (id1 !== id2) {
         setTimeout(() => {
-          this.#firstFlip.classList.add('invisible')
+          this.#firstFlip.lastChild.classList.add('invisible')
           flippedImage.classList.add('invisible')
-          this.#firstFlip.classList.remove('visible')
+          this.#firstFlip.lastChild.classList.remove('visible')
           flippedImage.classList.remove('visible')
 
           this.#firstFlip = null
           this.gameboard.classList.remove('unclickable')
         }, 1500)
       } else {
+        this.#flippedCards[flipped.getAttribute('card-index')] = true
+        this.#flippedCards[this.#firstFlip.getAttribute('card-index')] = true
+        this.#firstFlip.classList.remove('memory-card-active')
+        flipped.classList.remove('memory-card-active')
         this.#firstFlip = null
         this.gameboard.classList.remove('unclickable')
+        if (this.#isVictory()) {
+          this.#presentVictory()
+        }
+        console.log(this.#flippedCards)
       }
     }
   }
@@ -284,5 +299,22 @@ export class MemoryGame extends AppWindow {
     if (this.selectedTileIndex + 1 < (~~(this.selectedTileIndex / this.#width) + 1) * this.#width) {
       this.#selectTile(this.selectedTileIndex + 1)
     }
+  }
+
+  #isVictory () {
+    for (let i = 0; i < this.#width * this.#height; i++) {
+      if (!this.#flippedCards[i]) {
+        return false
+      }
+    }
+    return true
+  }
+
+  #presentVictory() {
+    const victoryMessage = document.createElement('h1')
+    victoryMessage.textContent = 'Victory'
+    victoryMessage.classList.add('memory-game-victory-message')
+
+    this.gameboard.appendChild(victoryMessage)
   }
 }
