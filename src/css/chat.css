@@ -1,6 +1,17 @@
+.chat-box {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.chat-message-row {
+
+}
+
+.chat-message-text {
+    
+}
+
 .chat-send-box {
-    position: relative;
-    bottom: 0;
 }
 
 .chat-send-textbox {

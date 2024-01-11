@@ -10,6 +10,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  font-family: monospace;
+  font-weight: bold;
 }
 
 main {

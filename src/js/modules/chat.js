@@ -2,7 +2,7 @@ import { AppWindow } from './appWindow'
 
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
-  #username = "Anna"
+  #username = "batman"
   #websocket
 
   constructor () {
@@ -12,6 +12,8 @@ export class Chat extends AppWindow {
 
   connectedCallback () {
     console.log('chat game added.')
+
+
 
     this.#buildChat()
 
@@ -23,10 +25,19 @@ export class Chat extends AppWindow {
     this.#closeSocket()
   }
 
+  #buildMenu () {
+    
+  }
+
   #buildChat () {
     const chatContainer = document.createElement('div')
-    chatContainer.setAttribute('id', 'chatContainer')
     chatContainer.classList.add('column')
+    this.appBox.appendChild(chatContainer)
+
+    const chatBox = document.createElement('div')
+    chatBox.setAttribute('id', 'chatBox')
+    chatBox.classList.add('chat-box')
+    chatContainer.appendChild(chatBox)
 
     const sendRow = document.createElement('div')
     sendRow.classList.add('row', 'chat-send-box')
@@ -44,31 +55,35 @@ export class Chat extends AppWindow {
       this.#sendMessage(sendTextbox.value)
     })
     sendRow.appendChild(sendButton)
-
-    this.appBox.appendChild(chatContainer)
   }
 
-  #messageReceived (data) {
-    console.log(data)
+  #handleNewMessage (parsed) {
+    console.log(parsed)
 
-    const username = data.username
-    const messageContents = data.data
-
-    // building the elements
     const messageRow = document.createElement('div')
     messageRow.classList.add('row', 'chat-message-row')
-    chatContainer.appendChild(messageRow)
+    document.getElementById('chatBox').appendChild(messageRow)
 
+    if (parsed.type == "message") {
+      this.#userMessage(messageRow, parsed.username, parsed.data)
+    } else if (parsed.type == "notification") {
+      this.#chatLog(messageRow, parsed.data)
+    }
+  }
+
+  #userMessage (msgRow, username, msg) {
     const messageUsername = document.createElement('p')
-    messageUsername.textContent = username
-    messageRow.appendChild(messageUsername)
+    messageUsername.textContent = username + ": "
+    msgRow.appendChild(messageUsername)
 
     const messageText = document.createElement('p')
     messageText.classList.add('chat-message-text')
-    messageText.textContent = messageContents
-    messageRow.appendChild(messageText)
+    messageText.textContent = msg
+    msgRow.appendChild(messageText)
+  }
 
-    document.getElementById('chatContainer').appendChild(messageRow)
+  #chatLog (msgRow, msg) {
+
   }
 
   #openSocket () {
@@ -82,9 +97,7 @@ export class Chat extends AppWindow {
         console.log('web socket received message: ' + event.data)
         console.log(event)
         const parsed = JSON.parse(event.data)
-        if (parsed.type == "message") {
-          this.#messageReceived(parsed)
-        }
+        this.#handleNewMessage(parsed)
     }
 
     this.#websocket.onclose = () => {
@@ -107,7 +120,6 @@ export class Chat extends AppWindow {
       key: "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd"
     }
     const response = JSON.stringify(body)
-    // todo: put key/username etc. into json
 
     if (!this.#websocket || this.#websocket.readyState !== 1) {
       console.log('The websocket is not open.')
