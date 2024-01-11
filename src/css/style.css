@@ -30,3 +30,7 @@ pwd-desktop {
   flex-direction: column;
   justify-content: center;
 }
+
+.hidden {
+  opacity: 10%;
+}

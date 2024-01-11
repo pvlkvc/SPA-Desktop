@@ -3,10 +3,27 @@ import * as dragAndDrop from './DragAndDrop.js'
 export class AppWindow extends HTMLElement {
   appBox
   #title
+  contextMenu
 
   constructor () {
     super()
 
+    this.#createAppWindow()
+    this.#createContextMenu()
+    this.appBox.addEventListener('contextmenu', (event) => {
+      event.preventDefault()
+      this.#showContextMenu(event.pageX, event.clientY)
+      console.log('context menu should be now open')
+    })
+
+    console.log('app window constructed')
+  }
+
+  connectedCallback () {
+    console.log('app window added.')
+  }
+
+  #createAppWindow () {
     this.appBox = document.createElement('div')
     this.appBox.classList.add('app-window')
     dragAndDrop.makeDraggable(this.appBox)
@@ -30,15 +47,34 @@ export class AppWindow extends HTMLElement {
     })
 
     document.getElementById('desktop').appendChild(this.appBox)
-
-    console.log('app window constructed')
   }
 
-  connectedCallback () {
-    console.log('app window added.')
+  #createContextMenu () {
+    this.contextMenu = document.createElement('div')
+    this.contextMenu.classList.add('hidden', 'app-context-menu')
+    const list = document.createElement('ul')
+    this.contextMenu.appendChild(list)
+    this.appBox.appendChild(this.contextMenu)
   }
 
   setTitle (title) {
     this.#title.textContent = title
+  }
+
+  #showContextMenu (x, y) {
+    const betterX = x - this.appBox.getBoundingClientRect().left
+    const betterY = y - this.appBox.getBoundingClientRect().top
+    this.contextMenu.style.left = betterX + 'px'
+    this.contextMenu.style.top = betterY + 'px'
+    this.contextMenu.classList.remove('hidden')
+  }
+
+  addContextMenuOption (text, href) {
+    const listing = document.createElement('li')
+    const anchor = document.createElement('a')
+    anchor.innerHTML = text
+    anchor.setAttribute('href', href)
+    listing.appendChild(anchor)
+    this.contextMenu.lastChild.appendChild(listing)
   }
 }

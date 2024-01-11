@@ -15,13 +15,13 @@ export class Chat extends AppWindow {
     console.log('chat game added.')
 
     this.#retrieveUsername()
-
     if (!this.#username) {
       this.#buildMenu()
     } else {
       this.#openSocket()
       this.#buildChat()
     }
+    this.setTitle('Chat')
   }
 
   disconnectedCallback () {
@@ -33,33 +33,45 @@ export class Chat extends AppWindow {
 
   #buildMenu () {
     const menu = document.createElement('div')
-    menu.classList.add('chat-menu')
+    menu.classList.add('column', 'chat-menu')
 
     const usernameInput = document.createElement('input')
     usernameInput.setAttribute('placeholder', 'username')
+    usernameInput.classList.add('chat-menu-input')
     usernameInput.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
-        if (usernameInput.value != '') {
-          loginButton.click()
-        } else {
-          if (document.getElementsByName('p').length == 0) {
-            const errorMessage = document.createElement('p')
-            errorMessage.textContent = 'You need to enter a username!'
-            menu.appendChild(errorMessage)
-          }
-        }
+        loginButton.click()
       }
     })
     menu.appendChild(usernameInput)
 
+    const channelInput = document.createElement('input')
+    channelInput.setAttribute('placeholder', 'channel id')
+    channelInput.classList.add('chat-menu-input')
+    channelInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        loginButton.click()
+      }
+    })
+    menu.appendChild(channelInput)
+
     const loginButton = document.createElement('input')
+    loginButton.classList.add('chat-menu-button')
     loginButton.setAttribute('type', 'submit')
     loginButton.setAttribute('value', 'Enter chat')
     loginButton.addEventListener('click', () => {
-      this.#newUsername(usernameInput.value)
-      menu.remove()
-      this.#openSocket()
-      this.#buildChat()
+      if (usernameInput.value != '') {
+        this.#newUsername(usernameInput.value)
+        menu.remove()
+        this.#openSocket()
+        this.#buildChat()
+      } else {
+        if (document.getElementsByName('p').length == 0) {
+          const errorMessage = document.createElement('p')
+          errorMessage.textContent = 'Enter username!'
+          menu.appendChild(errorMessage)
+        }
+      }
     })
     menu.appendChild(loginButton)
 
@@ -102,6 +114,9 @@ export class Chat extends AppWindow {
     sendRow.appendChild(sendButton)
 
     this.appBox.appendChild(chatContainer)
+
+    this.#createContextMenu()
+    sendTextbox.focus()
   }
 
   #handleNewMessage (parsed) {
@@ -200,5 +215,12 @@ export class Chat extends AppWindow {
   #newUsername (username) {
     const localStorage = window.localStorage
     localStorage.setItem('chat-username', username)
+    this.#username = username
+  }
+
+  #createContextMenu () {
+    this.addContextMenuOption('optionA', 'link')
+    this.addContextMenuOption('optionB', 'link')
+    this.addContextMenuOption('optionC', 'link')
   }
 }

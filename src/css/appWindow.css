@@ -47,3 +47,37 @@
   font-size: 2em;
   color: white;
 }
+
+.app-context-menu {
+  position: absolute;
+  z-index: 10001;
+  background-color: pink;
+  width: fit-content;
+  border: solid rgb(207, 124, 138);
+  border-width: 1px 1px 0px 1px;
+}
+
+.app-context-menu ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.app-context-menu li {
+  padding: 10px;
+  border: solid rgb(207, 124, 138);
+  border-width: 0px 0px 1px 0px;
+}
+
+.app-context-menu li:hover {
+  background-color: rgb(250, 173, 186);
+  cursor: pointer;
+}
+
+.app-context-menu a {
+  color: rgb(230, 75, 101);
+}
+
+.app-context-menu li:hover a {
+  color: rgb(255, 253, 253);
+}
