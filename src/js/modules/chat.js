@@ -4,6 +4,7 @@ export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
   #username = "batman"
   #websocket
+  #chatBox
 
   constructor () {
     super()
@@ -32,9 +33,8 @@ export class Chat extends AppWindow {
         if (usernameInput.value != '') {
           loginButton.click()
         } else {
-          if (!document.getElementById('chat-login-error')) {
+          if (document.getElementsByName('p').length == 0) {
             const errorMessage = document.createElement('p')
-            errorMessage.setAttribute('id', 'chat-login-error')
             errorMessage.textContent = 'You need to enter a username!'
             menu.appendChild(errorMessage)
           }
@@ -62,7 +62,7 @@ export class Chat extends AppWindow {
     chatContainer.classList.add('column')
 
     const chatBox = document.createElement('div')
-    chatBox.setAttribute('id', 'chatBox')
+    this.#chatBox = chatBox
     chatBox.classList.add('chat-box')
     chatContainer.appendChild(chatBox)
 
@@ -98,12 +98,12 @@ export class Chat extends AppWindow {
   #handleNewMessage (parsed) {
     console.log(parsed)
 
-    const chatBox = document.getElementById('chatBox')
-    const atBottom = chatBox.scrollHeight == chatBox.scrollTop + chatBox.offsetHeight
+    const atBottom = this.#chatBox.scrollHeight == 
+    this.#chatBox.scrollTop + this.#chatBox.offsetHeight
 
     const messageRow = document.createElement('div')
     messageRow.classList.add('chat-row')
-    chatBox.appendChild(messageRow)
+    this.#chatBox.appendChild(messageRow)
 
     if (parsed.type == "message") {
       this.#userMessage(messageRow, parsed.username, parsed.data)
@@ -111,9 +111,8 @@ export class Chat extends AppWindow {
       this.#chatLog(messageRow, parsed.data)
     }
 
-    console.log(chatBox.scrollHeight, chatBox.scrollTop, chatBox.offsetHeight)
     if (atBottom) {
-      chatBox.scrollTop = chatBox.scrollHeight - chatBox.offsetHeight
+      this.#chatBox.scrollTop = this.#chatBox.scrollHeight - this.#chatBox.offsetHeight
     }
   }
 
