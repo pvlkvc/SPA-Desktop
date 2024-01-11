@@ -19,6 +19,7 @@ export class MemoryGame extends AppWindow {
   connectedCallback () {
     console.log('memory game added.')
 
+    this.setTitle('Memory game')
     this.#createMenu()
     this.#setupKeyboardListeners()
   }
@@ -40,12 +41,12 @@ export class MemoryGame extends AppWindow {
 
     // buttons container
     const buttonRow = document.createElement('div')
-    buttonRow.classList.add('row')
+    buttonRow.classList.add('column', 'memory-menu-button-box')
     menu.appendChild(buttonRow)
 
     // creating the buttons
     const dimA = document.createElement('input')
-    dimA.classList.add('app-window-button')
+    dimA.classList.add('memory-menu-button')
     dimA.setAttribute('type', 'submit')
     const dimB = dimA.cloneNode(true)
     const dimC = dimA.cloneNode(true)
@@ -94,13 +95,14 @@ export class MemoryGame extends AppWindow {
     const cBox = document.createElement('div')
     cBox.classList.add('controls-box')
     const cText = document.createElement('p')
-    cText.textContent = 'ADD CONTROLS HERE ONCE I ACTUALLY DECIDE AND IMPLEMENT THEM'
+    const controls = "R - new game\n↑ - select up\n↓ - select down\n← - select left\n→ - select right\nENTER or SPACE - flip card"
+    cText.textContent = controls
     cBox.appendChild(cText)
     gameWindow.appendChild(cBox)
 
     // restart button
     const restartButton = document.createElement('input')
-    restartButton.classList.add('app-window-button')
+    restartButton.classList.add('memory-game-restart-button')
     restartButton.setAttribute('type', 'submit')
     restartButton.setAttribute('value', 'New Game')
     restartButton.setAttribute('id', 'memoryRestart')
@@ -156,6 +158,7 @@ export class MemoryGame extends AppWindow {
         image.classList.add('memory-card-image', 'invisible')
         image.setAttribute('src', './img/pet-' + this.#images[index] + '.png')
         image.setAttribute('image-id', this.#images[index])
+        image.setAttribute('draggable', 'false')
         card.appendChild(image)
 
         card.addEventListener('click', () => {
@@ -225,7 +228,7 @@ export class MemoryGame extends AppWindow {
           if (event.key == 'r' || event.key == 'R') {
             event.preventDefault()
             document.getElementById('memoryRestart').click()
-          } else if (event.key == 'Enter') {
+          } else if (event.key == 'Enter' || event.key == ' ') {
             if (!this.gameboard.classList.contains('unclickable')) {
               this.selectedTile.click()
             }

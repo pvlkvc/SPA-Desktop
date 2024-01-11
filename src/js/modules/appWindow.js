@@ -2,6 +2,7 @@ import * as dragAndDrop from './DragAndDrop.js'
 
 export class AppWindow extends HTMLElement {
   appBox
+  #title
 
   constructor () {
     super()
@@ -14,8 +15,14 @@ export class AppWindow extends HTMLElement {
     windowNavbar.classList.add('window-navbar')
     this.appBox.appendChild(windowNavbar)
 
+    this.#title = document.createElement('p')
+    windowNavbar.appendChild(this.#title)
+
     const closeButton = document.createElement('div')
     closeButton.classList.add('close-button')
+    const buttonText = document.createElement('h1')
+    buttonText.textContent = 'X'
+    closeButton.appendChild(buttonText)
     windowNavbar.appendChild(closeButton)
     closeButton.addEventListener('click', () => {
       this.appBox.remove()
@@ -29,5 +36,9 @@ export class AppWindow extends HTMLElement {
 
   connectedCallback () {
     console.log('app window added.')
+  }
+
+  setTitle (title) {
+    this.#title.textContent = title
   }
 }

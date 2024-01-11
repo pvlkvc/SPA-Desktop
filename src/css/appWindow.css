@@ -7,8 +7,8 @@
   width: fit-content;
   min-width: 200px;
   min-height: 200px;
-  background-color: blue;
-  border: solid black 2px;
+  background-color: rgb(255, 170, 203);
+  border: solid rgb(206, 106, 144) 1px;
   display: flex;
   flex-direction: column;
 }
@@ -16,16 +16,34 @@
 .window-navbar {
   display: flex;
   flex-direction: row;
-  justify-content: right;
-  border-bottom: solid black 2px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid rgb(206, 106, 144) 1px;
+  color: white;
+}
+
+.window-navbar p {
+  margin: 0;
+  margin-left: 5px;
+  text-shadow: 1px 1px 1px black;
 }
 
 .close-button {
   height: 30px;
   width: 30px;
-  background-color: red;
+  background-color: rgb(209, 0, 77);
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-.app-window-button {
+.close-button:hover {
+  background-color: rgb(182, 0, 67);
+  cursor: pointer;
+}
 
+.close-button h1 {
+  margin: 0;
+  font-size: 2em;
+  color: white;
 }

@@ -1,19 +1,58 @@
 .memory-game-menu {
+  background-color: rgb(255, 202, 235);
+  padding: 10px;
+  color: rgb(179, 15, 124);
+  text-shadow: 1px 1px 1px rgb(228, 185, 201);
+}
 
+.memory-menu-button-box {
+  align-items: center;
+  gap: 10px;
+}
+
+.memory-menu-button {
+  width: 60px;
+  font-size: 20px;
+  font-family: monospace;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  letter-spacing: 2px;
+  background-color: rgb(224, 103, 150);
+  border: none;
+  cursor: pointer;
+}
+
+.memory-menu-button:hover {
+  background-color: rgb(216, 83, 131);
+}
+
+.memory-menu-button:active {
+  background-color: rgb(199, 43, 105);
 }
 
 .memory-game-menu p {
   text-wrap: nowrap;
 }
 
-.gameboard {
-  margin: 5px;
-}
-
 .memory-game-window {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: rgb(235, 143, 200);
+  padding: 10px;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+}
+
+.gameboard {
+  margin: 5px;
+  background-color: rgb(255, 189, 230);
+  border: 2px solid rgb(179, 56, 129);
+  border-radius: 20px;
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
 }
 
 .memory-row {
@@ -22,16 +61,30 @@
 }
 
 .memory-card {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   background-color: palevioletred;
   margin: 5px;
-  background-image: url();
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px -2px 1px rgb(175, 83, 126);
+}
+
+.memory-card:hover {
+  background-color: rgb(207, 107, 141);
 }
 
 .memory-card-image {
+  position: relative;
   height: 100%;
   width: auto;
+}
+
+.memory-card-selected {
+  outline: 4px solid rgb(228, 18, 116);
+  outline-offset: -2px;
 }
 
 .visible {
@@ -48,10 +101,37 @@
   pointer-events: none;
 }
 
-.memory-card-selected {
-  background-color: red;
+.controls-box {
+  margin: 5px;
+  background-color: rgb(255, 189, 230);
+  border: 2px solid rgb(179, 56, 129);
+  border-radius: 20px;
+  padding: 10px;
+  width: 90%;
+  height: fit-content;
 }
 
-.controls-box {
+.controls-box p {
+  font-size: 1.2em;
+  white-space: pre-wrap;
+}
 
+.memory-game-restart-button {
+  width: 130px;
+  font-size: 20px;
+  font-family: monospace;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  letter-spacing: 2px;
+  background-color: rgb(224, 103, 150);
+  border: none;
+  cursor: pointer;
+}
+
+.memory-game-restart-button:hover {
+  background-color: rgb(216, 83, 131);
+}
+
+.memory-game-restart-button:active {
+  background-color: rgb(199, 43, 105);
 }
