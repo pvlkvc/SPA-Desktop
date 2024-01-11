@@ -2,7 +2,7 @@ import { AppWindow } from './AppWindow'
 
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
-  #username = "batman"
+  #username
   #websocket
   #chatBox
 
@@ -14,7 +14,14 @@ export class Chat extends AppWindow {
   connectedCallback () {
     console.log('chat game added.')
 
-    this.#buildMenu()
+    this.#retrieveUsername()
+
+    if (!this.#username) {
+      this.#buildMenu()
+    } else {
+      this.#openSocket()
+      this.#buildChat()
+    }
   }
 
   disconnectedCallback () {
@@ -49,7 +56,7 @@ export class Chat extends AppWindow {
     loginButton.setAttribute('type', 'submit')
     loginButton.setAttribute('value', 'Enter chat')
     loginButton.addEventListener('click', () => {
-      this.#username = usernameInput.value
+      this.#newUsername(usernameInput.value)
       menu.remove()
       this.#openSocket()
       this.#buildChat()
@@ -182,5 +189,16 @@ export class Chat extends AppWindow {
       this.#websocket.send(response)
       console.log('sending message: ' + messageText)
     }
+  }
+
+  #retrieveUsername () {
+    const localStorage = window.localStorage
+    this.#username = localStorage.getItem('chat-username') || null
+    console.log(this.#username)
+  }
+
+  #newUsername (username) {
+    const localStorage = window.localStorage
+    localStorage.setItem('chat-username', username)
   }
 }
