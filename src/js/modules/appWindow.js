@@ -8,12 +8,6 @@ export class AppWindow extends HTMLElement {
   constructor () {
     super()
 
-    console.log('app window constructed')
-  }
-
-  connectedCallback () {
-    console.log('app window added.')
-
     this.#createAppWindow()
     this.#createContextMenu()
     this.appBox.addEventListener('contextmenu', (event) => {
@@ -22,9 +16,11 @@ export class AppWindow extends HTMLElement {
       console.log('context menu should be now open')
     })
 
-    const testVar = document.createElement('p')
-    this.testVar.textContent = 'meow'
-    this.appendChild(testVar)
+    console.log('app window constructed')
+  }
+
+  connectedCallback () {
+    console.log('app window added.')
   }
 
   #createAppWindow () {

@@ -78,6 +78,7 @@ export class Desktop extends HTMLElement {
     }
 
     addApp (app) {
+        console.log(app.appBox)
         // spawing at position
         app.appBox.style.left = this.#appOffset + 'px'
         app.appBox.style.top = this.#appOffset + 'px'
