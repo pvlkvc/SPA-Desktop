@@ -13,21 +13,13 @@ export class MemoryGame extends AppWindow {
   selectedTile
   #tileElements = []
 
-  constructor () {
-    super()
-    console.log('memory game constructor')
-  }
-
   connectedCallback () {
-    console.log('memory game added.')
-
     this.setTitle('Memory game')
     this.#createMenu()
     this.#setupKeyboardListeners()
   }
 
   disconnectedCallback () {
-    console.log('memory game removed.')
   }
 
   /**
@@ -84,7 +76,6 @@ export class MemoryGame extends AppWindow {
     for (let i = 0; i < w * h; i++) {
       this.#flippedCards[i] = false
     }
-    console.log(this.#flippedCards)
     this.appBox.removeChild(this.appBox.lastChild)
     this.#createGame()
   }
@@ -197,7 +188,6 @@ export class MemoryGame extends AppWindow {
     flippedImage.classList.add('visible')
 
     if (!this.#firstFlip) {
-      console.log('this is first flip')
       this.#firstFlip = flipped
       // return
     } else {
@@ -228,7 +218,6 @@ export class MemoryGame extends AppWindow {
         if (this.#isVictory()) {
           this.#presentVictory()
         }
-        console.log(this.#flippedCards)
       }
     }
   }
@@ -239,7 +228,6 @@ export class MemoryGame extends AppWindow {
   #setupKeyboardListeners () {
     this.addEventListener('keypress', function (event) {
       if (!this.gameStarted) {
-        console.log('memory menu keyboard press')
         if (event.key === 'Enter' || event.key === ' ') {
           this.gameStart(4, 4)
         }
