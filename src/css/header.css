@@ -1,7 +1,9 @@
 header {
-  height: 20px;
+  z-index: 10002;
+  justify-content: right !important;
 }
 
 header p {
-  margin: 0;
+  margin: 2px;
+  color: rgb(223, 171, 199);
 }

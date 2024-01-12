@@ -5,8 +5,9 @@
   width: 70px;
   height: 100vh;
   gap: 15px;
-  background-color: rgb(118, 75, 122);
+  background-image: linear-gradient(to right, transparent 23%, rgb(243, 130, 164) 25%, rgb(243, 130, 164) 75%, transparent 77%);
   z-index: 10000;
+  padding-left: 5px;
 }
 
 .taskbar img {
@@ -16,16 +17,18 @@
 
 .taskbar .button {
   height: 100%;
-  background-color: blueviolet;
-  width: fit-content;
+  width: auto;
+  background-color: rgb(236, 71, 148);
+  border-radius: 45%;
 }
 
 .taskbar .button:hover {
-  background-color: rgba(0, 0, 0, 0.171);
+  background-color: rgb(201, 47, 118);
+  cursor: pointer;
 }
 
 .taskbar a:active .button {
-  background-color: brown;
+  background-color: rgb(241, 14, 120);
 }
 
 .taskbar a {

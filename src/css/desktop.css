@@ -1,5 +1,12 @@
+pwd-desktop {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+}
+
 pwd-desktop .desktop {
+  position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(252, 214, 251);
+  background-color: rgb(255, 220, 234);
 }
