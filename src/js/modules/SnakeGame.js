@@ -14,6 +14,7 @@ export class SnakeGame extends AppWindow {
     score
     currentDirection
     gameState = []
+    gameboard
 
     constructor () {
         super()
@@ -44,8 +45,8 @@ export class SnakeGame extends AppWindow {
             this.updateBoard()
 
             // advance
-            let sx = this.gameState.lastIndexOf.x
-            let sy = this.gameState.lastIndexOf.y
+            let sx = this.gameState[this.gameState.length - 1].x
+            let sy = this.gameState[this.gameState.length - 1].y
 
             if (this.currentDirection == this.Directions.Up) {
                 this.gameState.push( { x: sx, y: sy - 1 } )
@@ -56,13 +57,12 @@ export class SnakeGame extends AppWindow {
             } else if (this.currentDirection == this.Directions.Left) {
                 this.gameState.push( { x: sx - 1, y: sy } )
             }
-
-          }, 300)
+          }, 1000)
     }
 
     createBoard () {
-        const table = document.createElement('table')
-        table.classList.add('snake-board-table')
+        this.gameboard = document.createElement('table')
+        this.gameboard.classList.add('snake-board-table')
 
         for (let i = 0; i < this.height; i++) {
             const tr = document.createElement('tr')
@@ -72,14 +72,26 @@ export class SnakeGame extends AppWindow {
                 tr.appendChild(td)
             }
 
-            table.appendChild(tr)
+            this.gameboard.appendChild(tr)
         }
 
-        this.appBox.appendChild(table)
+        console.log(this.gameboard.rows[0].cells)
+
+        this.appBox.appendChild(this.gameboard)
     }
 
     updateBoard () {
+        // fill all with blue
 
+        for (let i = 0; i < this.gameState.length; i++) {
+            const sx = this.gameState[i].x
+            const sy = this.gameState[i].y
+
+            // console.log('updating snake body part ', i)
+            // console.log('updating tile at ', sx, sy)
+
+            this.gameboard.rows[sy].cells[sx].classList.add('snake-board-filled-cell')
+        }
     }
     /**
     * Creates the keyboard event listeners.
@@ -131,7 +143,7 @@ export class SnakeGame extends AppWindow {
 
   goLeft () {
     if (this.currentDirection != this.Directions.Right) {
-        this.currentDirection = this.Directions.Down
+        this.currentDirection = this.Directions.Left
     }
   }
 }

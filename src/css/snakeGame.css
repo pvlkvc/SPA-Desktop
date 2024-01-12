@@ -1,10 +1,20 @@
 .snake-board-table {
-    background-color: blue;
+    background-color: aqua;
 }
 
 .snake-board-td {
-    background-color: aqua;
     border: 1px solid black;
     height: 30px;
     width: 30px;
+}
+
+.snake-board-weird {
+    background-color: rgb(92, 28, 145);
+    border: 1px solid black;
+    height: 30px;
+    width: 30px;
+}
+
+.snake-board-filled-cell {
+    background-color: rgb(25, 0, 255);
 }
