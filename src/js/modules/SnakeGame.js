@@ -49,7 +49,7 @@ export class SnakeGame extends AppWindow {
     const cBox = document.createElement('div')
     cBox.classList.add('controls-box')
     const cText = document.createElement('p')
-    const controls = 'R - new game\n↑ - up\n↓ - down\n← - left\n→ - right'
+    const controls = 'R - new game\nW - up\nS - down\nA - left\nD - right'
     cText.textContent = controls
     cBox.appendChild(cText)
     this.snakeGame.appendChild(cBox)
@@ -177,17 +177,25 @@ export class SnakeGame extends AppWindow {
       if (event.key === 'r' || event.key === 'R') {
         event.preventDefault()
         this.restartGame()
+      } else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+        this.goRight()
+      } else if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
+        this.goUp()
+      } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+        this.goLeft()
+      } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
+        this.goDown()
       }
     })
     this.addEventListener('keydown', function (event) {
       if (this.gameStarted) {
-        if (event.key === 'ArrowRight') {
+        if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
           this.goRight()
-        } else if (event.key === 'ArrowUp') {
+        } else if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
           this.goUp()
-        } else if (event.key === 'ArrowLeft') {
+        } else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
           this.goLeft()
-        } else if (event.key === 'ArrowDown') {
+        } else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') {
           this.goDown()
         }
       }

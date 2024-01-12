@@ -1,4 +1,5 @@
 import { AppWindow } from './AppWindow.js'
+import { getTime } from './Time.js'
 
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
@@ -134,9 +135,10 @@ export class Chat extends AppWindow {
     messageRow.classList.add('chat-row')
     this.chatBox.appendChild(messageRow)
 
+    const time = getTime()
     if (parsed.type === 'message') {
       if (parsed.channel === this.#channel || this.#channel === '' || !this.#channel) {
-        this.#userMessage(messageRow, parsed.username, parsed.data)
+        this.#userMessage(messageRow, parsed.username, parsed.data, time)
       } else {
         messageRow.remove()
       }
@@ -154,14 +156,24 @@ export class Chat extends AppWindow {
    * @param { HTMLElement } msgRow allocated place for the message
    * @param { string } username username of the sender
    * @param { string } msg message contents
+   * @param { string } time hour and minute as string
    */
-  #userMessage (msgRow, username, msg) {
+  #userMessage (msgRow, username, msg, time) {
     msgRow.classList.add('chat-message-row')
+
+    const topRow = document.createElement('div')
+    topRow.classList.add('chat-message-top-row')
+    msgRow.appendChild(topRow)
 
     const messageUsername = document.createElement('p')
     messageUsername.classList.add('chat-message-username')
     messageUsername.textContent = username
-    msgRow.appendChild(messageUsername)
+    topRow.appendChild(messageUsername)
+
+    const messageTime = document.createElement('p')
+    messageTime.classList.add('chat-message-time')
+    messageTime.textContent = time
+    topRow.appendChild(messageTime)
 
     const messageText = document.createElement('p')
     messageText.classList.add('chat-message-text')

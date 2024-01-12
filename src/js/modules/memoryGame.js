@@ -11,7 +11,7 @@ export class MemoryGame extends AppWindow {
   gameboard
   selectedTileIndex
   selectedTile
-  #tileElements = []
+  #tileElements
 
   connectedCallback () {
     this.setTitle('Memory game')
@@ -73,9 +73,7 @@ export class MemoryGame extends AppWindow {
     this.#width = w
     this.#height = h
     this.#flippedCards = Array(w * h)
-    for (let i = 0; i < w * h; i++) {
-      this.#flippedCards[i] = false
-    }
+
     this.appBox.removeChild(this.appBox.lastChild)
     this.#createGame()
   }
@@ -84,6 +82,11 @@ export class MemoryGame extends AppWindow {
    * Creates the game element.
    */
   #createGame () {
+    this.#tileElements = []
+    for (let i = 0; i < this.#width * this.#height; i++) {
+      this.#flippedCards[i] = false
+    }
+
     this.#gameWindow = document.createElement('div')
     this.#gameWindow.classList.add('memory-game-window')
 
@@ -107,13 +110,14 @@ export class MemoryGame extends AppWindow {
     restartButton.setAttribute('type', 'submit')
     restartButton.setAttribute('value', 'New Game')
     restartButton.addEventListener('click', () => {
-      this.appBox.removeChild(this.#gameWindow)
-      this.#createGame()
+      this.restartGame()
     })
     this.#gameWindow.appendChild(restartButton)
 
     // placing this all inside the app window
     this.appBox.appendChild(this.#gameWindow)
+
+    this.#selectTile(0)
   }
 
   /**
@@ -164,6 +168,7 @@ export class MemoryGame extends AppWindow {
 
         card.addEventListener('click', () => {
           this.#handleCardFlip(card)
+          console.log(card.element)
         })
 
         // keep an array of elements corresponding to cards for easier access
@@ -173,8 +178,6 @@ export class MemoryGame extends AppWindow {
         index++
       }
     }
-
-    this.#selectTile(0)
   }
 
   /**
@@ -270,12 +273,13 @@ export class MemoryGame extends AppWindow {
    * @param { number } arrayIndex index of the tile to be selected
    */
   #selectTile (arrayIndex) {
-    if (this.selectedTile) {
+    if (this.selectedTile != null) {
       this.selectedTile.classList.remove('memory-card-selected')
     }
     this.selectedTile = this.#tileElements[arrayIndex]
     this.selectedTileIndex = arrayIndex
 
+    console.log(this.selectedTile)
     this.selectedTile.classList.add('memory-card-selected')
   }
 

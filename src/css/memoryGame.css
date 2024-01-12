@@ -10,7 +10,7 @@
 }
 
 .memory-game-menu p {
-  white-space: pre-wrap;
+  white-space: Zz;
   text-align: center;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .invisible {
-  opacity: 20%;
+  opacity: 0%;
   transition: 0.2s linear all;
 }
 

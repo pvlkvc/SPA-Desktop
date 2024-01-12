@@ -1,5 +1,6 @@
 import * as dap from './DragAndDrop.js'
 import { AppWindow } from './AppWindow.js'
+import { getTime } from './Time.js'
 
 export class Desktop extends HTMLElement {
   #desktop
@@ -43,28 +44,28 @@ export class Desktop extends HTMLElement {
 
     const timeEl = document.createElement('p')
     timeEl.classList.add('desktop-time')
-    const time = this.getTime()
+    const time = getTime()
     timeEl.textContent = time
     setInterval(() => {
-      const time = this.getTime()
+      const time = getTime()
       timeEl.textContent = time
     }, 60000)
     this.#desktop.appendChild(timeEl)
 
     // taskbar buttons
-    let button = this.#createButton('img/icon-memory.png')
+    let button = this.#createButton('/img/icon-memory.png')
     button.addEventListener('click', (event) => {
       this.#openApp('memory-game')
     })
     taskbar.appendChild(button)
 
-    button = this.#createButton('img/icon-chat.png')
+    button = this.#createButton('/img/icon-chat.png')
     button.addEventListener('click', (event) => {
       this.#openApp('chat-app')
     })
     taskbar.appendChild(button)
 
-    button = this.#createButton('img/icon-snake.png')
+    button = this.#createButton('/img/icon-snake.png')
     button.addEventListener('click', (event) => {
       this.#openApp('snake-game')
     })
@@ -124,16 +125,5 @@ export class Desktop extends HTMLElement {
     })
 
     this.#desktop.appendChild(app)
-  }
-
-  /**
-   * Computes the current time.
-   * @returns { string } time a string
-   */
-  getTime () {
-    const date = new Date()
-    const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-    const time = date.getHours() + ':' + mins
-    return time
   }
 }

@@ -13,6 +13,7 @@ body {
   overflow: hidden;
   font-family: monospace;
   font-weight: bold;
+  user-select: none;
 }
 
 .row {

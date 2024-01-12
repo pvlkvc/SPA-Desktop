@@ -59,10 +59,21 @@
     max-width: 200px;
 }
 
-.chat-message-username {
-    color: rgb(224, 7, 188);
+.chat-message-top-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border: dashed rgb(184, 161, 164);
     border-width: 0px 0px 1px 0px;
+}
+
+.chat-message-username {
+    color: rgb(224, 7, 188);
+    margin: 0;
+}
+
+.chat-message-time {
+    color: grey;
     margin: 0;
 }
 

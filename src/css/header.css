@@ -6,4 +6,5 @@ header {
 header p {
   margin: 2px;
   color: rgb(223, 171, 199);
+  user-select: none;
 }
