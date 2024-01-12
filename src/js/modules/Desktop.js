@@ -47,6 +47,7 @@ export class Desktop extends HTMLElement {
         const time = this.getTime()
         const timeEl = document.createElement('p')
         timeEl.textContent = time
+        timeEl.classList.add('desktop-time')
         this.#desktop.appendChild(timeEl)
 
         // taskbar buttons

@@ -10,8 +10,7 @@ pwd-desktop .desktop {
   height: 100vh;
   background-color: rgb(255, 220, 234);
 }
-
-pwd-desktop .desktop p {
+.desktop-time {
   color: white;
   position: absolute;
   right: 5%;
