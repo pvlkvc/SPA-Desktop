@@ -53,18 +53,11 @@ export class SnakeGame extends AppWindow {
         const sy = lastState.y
 
         // loss check (is the current position invalid)
-        if (sx >= this.width || sx < 0 || sy >= this.height || sy < 0) {
-            console.log('LOST DUE TO HITTING WALL')
+        if (this.hasLost()) {
+            this.showGameoverMessage()
+            return
         }
-        for (let i = 0; i < this.gameState.length - 1; i++) {
-            const px = this.gameState[i].x
-            const py = this.gameState[i].y
 
-            if (px == sx && py == sy) {
-                console.log('LOST DUE TO HITTING TAIL')
-            }
-        }
-        
         // food check
         if (this.foodPos.x == lastState.x && this.foodPos.y == lastState.y) {
             this.snakeLength++
@@ -224,5 +217,32 @@ export class SnakeGame extends AppWindow {
             this.currentDirection = this.Directions.Left
             this.dynamicallyUpdate()
         }
+    }
+
+    hasLost () {
+        const sx = this.gameState[this.gameState.length - 1].x
+        const sy = this.gameState[this.gameState.length - 1].y
+
+        if (sx >= this.width || sx < 0 || sy >= this.height || sy < 0) {
+            console.log('LOST DUE TO HITTING WALL')
+            return true
+        }
+        for (let i = 0; i < this.gameState.length - 1; i++) {
+            const px = this.gameState[i].x
+            const py = this.gameState[i].y
+
+            if (px == sx && py == sy) {
+                console.log('LOST DUE TO HITTING TAIL')
+                return true
+            }
+        }
+    }
+
+    showGameoverMessage() {
+        const message = document.createElement('h1')
+        message.textContent = 'Gameover'
+        message.classList.add('snake-gameover-message')
+
+        this.gameboard.appendChild(message)
     }
 }
