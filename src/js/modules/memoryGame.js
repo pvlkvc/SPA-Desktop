@@ -73,6 +73,8 @@ export class MemoryGame extends AppWindow {
 
   /**
    * Advances from the menu to the game.
+   * @param { number } w width of the gameboard
+   * @param { number } h height of the gameboard
    */
   gameStart (w, h) {
     this.gameStarted = true
@@ -103,7 +105,7 @@ export class MemoryGame extends AppWindow {
     const cBox = document.createElement('div')
     cBox.classList.add('controls-box')
     const cText = document.createElement('p')
-    const controls = "R - new game\n↑ - select up\n↓ - select down\n← - select left\n→ - select right\nENTER or SPACE - flip card"
+    const controls = 'R - new game\n↑ - select up\n↓ - select down\n← - select left\n→ - select right\nENTER or SPACE - flip card'
     cText.textContent = controls
     cBox.appendChild(cText)
     this.#gameWindow.appendChild(cBox)
@@ -187,7 +189,6 @@ export class MemoryGame extends AppWindow {
   /**
    * Decides the outcome after flipping a card.
    * @param { HTMLElement } flipped recently flipped card
-   * @returns true if two flipped cards match
    */
   #handleCardFlip (flipped) {
     const flippedImage = flipped.lastChild
@@ -237,42 +238,49 @@ export class MemoryGame extends AppWindow {
    */
   #setupKeyboardListeners () {
     this.addEventListener('keypress', function (event) {
-        if (!this.gameStarted) {
-            console.log('memory menu keyboard press')
-            if (event.key == 'Enter' || event.key == ' ') {
-              this.gameStart(4, 4)
-            }
-        } else {
-          if (event.key == 'r' || event.key == 'R') {
-            event.preventDefault()
-            this.restartGame()
-          } else if (event.key == 'Enter' || event.key == ' ') {
-            if (!this.gameboard.classList.contains('unclickable')) {
-              this.selectedTile.click()
-            }
+      if (!this.gameStarted) {
+        console.log('memory menu keyboard press')
+        if (event.key === 'Enter' || event.key === ' ') {
+          this.gameStart(4, 4)
+        }
+      } else {
+        if (event.key === 'r' || event.key === 'R') {
+          event.preventDefault()
+          this.restartGame()
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          if (!this.gameboard.classList.contains('unclickable')) {
+            this.selectedTile.click()
           }
         }
+      }
     })
     this.addEventListener('keydown', function (event) {
       if (this.gameStarted) {
-        if (event.key == 'ArrowRight') {
+        if (event.key === 'ArrowRight') {
           this.selectRight()
-        } else if (event.key == 'ArrowUp') {
+        } else if (event.key === 'ArrowUp') {
           this.selectUp()
-        } else if (event.key == 'ArrowLeft') {
+        } else if (event.key === 'ArrowLeft') {
           this.selectLeft()
-        } else if (event.key == 'ArrowDown') {
+        } else if (event.key === 'ArrowDown') {
           this.selectDown()
         }
       }
-  })
+    })
   }
 
+  /**
+   * Restarts the game.
+   */
   restartGame () {
     this.appBox.removeChild(this.#gameWindow)
     this.#createGame()
   }
 
+  /**
+   * Marks a tile as selected.
+   * @param { number } arrayIndex index of the tile to be selected
+   */
   #selectTile (arrayIndex) {
     if (this.selectedTile) {
       this.selectedTile.classList.remove('memory-card-selected')
@@ -283,30 +291,46 @@ export class MemoryGame extends AppWindow {
     this.selectedTile.classList.add('memory-card-selected')
   }
 
+  /**
+   * Moves the selection down.
+   */
   selectDown () {
     if (this.selectedTileIndex + this.#width < this.#width * this.#height) {
       this.#selectTile(this.selectedTileIndex + this.#width)
     }
   }
 
+  /**
+   * Moves the selection up.
+   */
   selectUp () {
     if (this.selectedTileIndex - this.#width >= 0) {
       this.#selectTile(this.selectedTileIndex - this.#width)
     }
   }
 
+  /**
+   * Moves the selection left.
+   */
   selectLeft () {
     if (this.selectedTileIndex > (~~(this.selectedTileIndex / this.#width)) * this.#width) {
       this.#selectTile(this.selectedTileIndex - 1)
     }
   }
 
+  /**
+   * Moves the selection right.
+   */
   selectRight () {
     if (this.selectedTileIndex + 1 < (~~(this.selectedTileIndex / this.#width) + 1) * this.#width) {
       this.#selectTile(this.selectedTileIndex + 1)
     }
   }
 
+  /**
+   * Checks if the player has won.
+   * @returns { boolean } true if all tiles are marked as flipped
+   */
   #isVictory () {
     for (let i = 0; i < this.#width * this.#height; i++) {
       if (!this.#flippedCards[i]) {
@@ -316,7 +340,10 @@ export class MemoryGame extends AppWindow {
     return true
   }
 
-  #presentVictory() {
+  /**
+   * Presents the victory message.
+   */
+  #presentVictory () {
     const victoryMessage = document.createElement('h1')
     victoryMessage.textContent = 'Victory'
     victoryMessage.classList.add('memory-game-victory-message')

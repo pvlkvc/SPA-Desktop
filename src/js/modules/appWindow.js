@@ -13,17 +13,13 @@ export class AppWindow extends HTMLElement {
     this.appBox.addEventListener('contextmenu', (event) => {
       event.preventDefault()
       this.#showContextMenu(event.pageX, event.clientY)
-      console.log('context menu should be now open')
     })
     document.addEventListener('click', () => { this.#hideContextMenu() })
-
-    console.log('app window constructed')
   }
 
-  connectedCallback () {
-    console.log('app window added.')
-  }
-
+  /**
+   * Creates the HTML elements making up the app window.
+   */
   #createAppWindow () {
     this.appBox = document.createElement('div')
     this.appBox.classList.add('app-window')
@@ -51,6 +47,9 @@ export class AppWindow extends HTMLElement {
     document.getElementById('desktop').appendChild(this.appBox)
   }
 
+  /**
+   * Creates the context menu template for this app window.
+   */
   #createContextMenu () {
     this.contextMenu = document.createElement('div')
     this.contextMenu.classList.add('hidden', 'app-context-menu')
@@ -59,10 +58,19 @@ export class AppWindow extends HTMLElement {
     this.appBox.appendChild(this.contextMenu)
   }
 
+  /**
+   * Sets a title to this app window.
+   * @param { string } title title of the app
+   */
   setTitle (title) {
     this.#title.textContent = title
   }
 
+  /**
+   * Shows the context menu at given location.
+   * @param { number } x x coordinate
+   * @param { number } y y coordinate
+   */
   #showContextMenu (x, y) {
     const betterX = x - this.appBox.getBoundingClientRect().left
     const betterY = y - this.appBox.getBoundingClientRect().top
@@ -71,10 +79,22 @@ export class AppWindow extends HTMLElement {
     this.contextMenu.classList.remove('hidden')
   }
 
-  #hideContextMenu() {
+  /**
+   * Hides the context menu.
+   */
+  #hideContextMenu () {
     this.contextMenu.classList.add('hidden')
   }
 
+  /**
+   * Adds a new option to the context menu.
+   * This is only visual and these buttons still have to be
+   * connected to be given their functionalities.
+   * Meant to be given a unique class name and
+   * later found by searching for classname at this instance.
+   * @param { string } text option text
+   * @param { string } cl class name to be assigned to this option
+   */
   addContextMenuOption (text, cl) {
     const listing = document.createElement('li')
     const p = document.createElement('p')

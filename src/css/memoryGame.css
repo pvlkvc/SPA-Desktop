@@ -44,10 +44,6 @@
   outline-offset: -2px;
 }
 
-.memory-game-menu p {
-  text-wrap: nowrap;
-}
-
 .memory-game-window {
   display: flex;
   flex-direction: column;

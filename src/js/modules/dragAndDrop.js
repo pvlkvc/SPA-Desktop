@@ -3,7 +3,7 @@ export { makeDraggable, makeDropZone }
 let currentlyDragged
 
 /**
- *
+ * Makes an HTML element draggable.
  * @param { HTMLElement } htmlEl DOM element to be dragged
  */
 function makeDraggable (htmlEl) {
@@ -27,7 +27,7 @@ function makeDraggable (htmlEl) {
 }
 
 /**
- *
+ * Makes an HTML element a dropzone for draggables.
  * @param {HTMLElement} htmlEl DOM element to be dragged
  */
 function makeDropZone (htmlEl) {
