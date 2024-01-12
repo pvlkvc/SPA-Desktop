@@ -15,6 +15,7 @@ export class SnakeGame extends AppWindow {
     currentDirection
     gameState = []
     gameboard
+    foodPos
 
     constructor () {
         super()
@@ -40,13 +41,24 @@ export class SnakeGame extends AppWindow {
         this.gameState.push( { x: this.width / 2, y: this.height / 2 } )
 
         this.createBoard()
+        this.spawnFood()
 
         setInterval(() => {
+            const lastState = this.gameState[this.gameState.length - 1]
+
             this.updateBoard()
 
+            // food check
+            if (this.foodPos.x == lastState.x && this.foodPos.y == lastState.y) {
+                length++
+                this.spawnFood()
+            }
+
+            // loss check
+
             // advance
-            let sx = this.gameState[this.gameState.length - 1].x
-            let sy = this.gameState[this.gameState.length - 1].y
+            const sx = lastState.x
+            const sy = lastState.y
 
             if (this.currentDirection == this.Directions.Up) {
                 this.gameState.push( { x: sx, y: sy - 1 } )
@@ -90,8 +102,12 @@ export class SnakeGame extends AppWindow {
             // console.log('updating snake body part ', i)
             // console.log('updating tile at ', sx, sy)
 
-            this.gameboard.rows[sy].cells[sx].classList.add('snake-board-filled-cell')
+            this.gameboard.rows[sy].cells[sx].classList.add('snake-board-snake-cell')
         }
+
+        const fx = this.foodPos.x
+        const fy = this.foodPos.y
+        this.gameboard.rows[fy].cells[fx].classList.add('snake-board-food-cell')
     }
     /**
     * Creates the keyboard event listeners.
@@ -123,27 +139,51 @@ export class SnakeGame extends AppWindow {
         })
     }
 
-  goUp () {
-    if (this.currentDirection != this.Directions.Down) {
-        this.currentDirection = this.Directions.Up
-    }
-  }
+    spawnFood () {
+        let invalidPos = true
+        let fx = 0
+        let fy = 0
 
-  goRight () {
-    if (this.currentDirection != this.Directions.Left) {
-        this.currentDirection = this.Directions.Right
-    }
-  }
+        while (invalidPos) {
+            invalidPos = false
+            fx = Math.floor(Math.random() * (this.width))
+            fy = Math.floor(Math.random() * (this.height))
 
-  goDown () {
-    if (this.currentDirection != this.Directions.Up) {
-        this.currentDirection = this.Directions.Down
-    }
-  }
+            for (let i = 0; i < this.gameState.length; i++) {
+                const sx = this.gameState[i].x
+                const sy = this.gameState[i].y
 
-  goLeft () {
-    if (this.currentDirection != this.Directions.Right) {
-        this.currentDirection = this.Directions.Left
+                if (sx == fx && sy == fy) {
+                    invalidPos = true
+                    break
+                }
+            }
+        }
+
+        this.foodPos = { x: fx, y: fy }
     }
-  }
+
+    goUp () {
+        if (this.currentDirection != this.Directions.Down) {
+            this.currentDirection = this.Directions.Up
+        }
+    }
+
+    goRight () {
+        if (this.currentDirection != this.Directions.Left) {
+            this.currentDirection = this.Directions.Right
+        }
+    }
+
+    goDown () {
+        if (this.currentDirection != this.Directions.Up) {
+            this.currentDirection = this.Directions.Down
+        }
+    }
+
+    goLeft () {
+        if (this.currentDirection != this.Directions.Right) {
+            this.currentDirection = this.Directions.Left
+        }
+    }
 }

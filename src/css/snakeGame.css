@@ -15,6 +15,10 @@
     width: 30px;
 }
 
-.snake-board-filled-cell {
+.snake-board-snake-cell {
     background-color: rgb(25, 0, 255);
+}
+
+.snake-board-food-cell {
+    background-color: rgb(255, 0, 0);
 }
