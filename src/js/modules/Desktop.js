@@ -8,46 +8,13 @@ export class Desktop extends HTMLElement {
 
     constructor () {
         super()
-
         console.log('desktop constructed')
     }
 
     connectedCallback () {
         console.log('desktop added.')
 
-        // build desktop
-
-        // taskbar
-        const taskbar = document.createElement('div')
-        taskbar.classList.add('taskbar')
-        // document.getElementById('main').appendChild(taskbar)
-        document.getElementById('pwd-desktop').appendChild(taskbar)
-
-        // desktop
-        this.#desktop = document.createElement('div')
-        this.#desktop.setAttribute('id', 'desktop')
-        this.#desktop.classList.add('desktop')
-        // document.getElementById('main').appendChild(this.#desktop)
-        document.getElementById('pwd-desktop').appendChild(this.#desktop)
-
-        // taskbar buttons
-        let button = this.#createButton("img/pet-7.png")
-        button.addEventListener('click', (event) => {
-            this.#openApp('memory-game')
-        })
-        taskbar.appendChild(button)
-
-        button = this.#createButton("img/pet-8.png")
-        button.addEventListener('click', (event) => {
-            this.#openApp('chat-app')
-        })
-        taskbar.appendChild(button)
-
-        button = this.#createButton("img/pet-1.png")
-        button.addEventListener('click', (event) => {
-            this.#openApp('snake-game')
-        })
-        taskbar.appendChild(button)
+        this.#buildDesktop()
 
         dap.makeDropZone(this.#desktop)
 
@@ -62,6 +29,44 @@ export class Desktop extends HTMLElement {
                 this.#focused.dispatchEvent(new KeyboardEvent('keydown', {'key': e.key}))
             }
         })
+    }
+
+    #buildDesktop () {
+        // taskbar
+        const taskbar = document.createElement('div')
+        taskbar.classList.add('taskbar')
+        // document.getElementById('main').appendChild(taskbar)
+        document.getElementById('pwd-desktop').appendChild(taskbar)
+
+        // desktop
+        this.#desktop = document.createElement('div')
+        this.#desktop.setAttribute('id', 'desktop')
+        this.#desktop.classList.add('desktop')
+        document.getElementById('pwd-desktop').appendChild(this.#desktop)
+
+        const time = this.getTime()
+        const timeEl = document.createElement('p')
+        timeEl.textContent = time
+        this.#desktop.appendChild(timeEl)
+
+        // taskbar buttons
+        let button = this.#createButton("img/icon-memory.png")
+        button.addEventListener('click', (event) => {
+            this.#openApp('memory-game')
+        })
+        taskbar.appendChild(button)
+
+        button = this.#createButton("img/icon-chat.png")
+        button.addEventListener('click', (event) => {
+            this.#openApp('chat-app')
+        })
+        taskbar.appendChild(button)
+
+        button = this.#createButton("img/icon-snake.png")
+        button.addEventListener('click', (event) => {
+            this.#openApp('snake-game')
+        })
+        taskbar.appendChild(button)
     }
 
     #createButton (iconPath) {
@@ -105,5 +110,11 @@ export class Desktop extends HTMLElement {
         })
 
         this.#desktop.appendChild(app)
+    }
+
+    getTime () {
+        const date = new Date()
+        const time = date.getHours() + ":" + date.getMinutes()
+        return time
     }
 }

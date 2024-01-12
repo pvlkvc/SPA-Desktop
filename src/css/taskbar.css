@@ -30,17 +30,17 @@
 .taskbar .button {
   height: auto;
   width: 100%;
-  background-color: rgb(236, 71, 148);
+  background-color: rgb(243, 104, 169);
   border-radius: 45%;
 }
 
 .taskbar .button:hover {
-  background-color: rgb(201, 47, 118);
+  background-color: rgb(224, 73, 143);
   cursor: pointer;
 }
 
 .taskbar a:active .button {
-  background-color: rgb(241, 14, 120);
+  background-color: rgb(209, 59, 129);
 }
 
 .taskbar a {

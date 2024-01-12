@@ -10,3 +10,15 @@ pwd-desktop .desktop {
   height: 100vh;
   background-color: rgb(255, 220, 234);
 }
+
+pwd-desktop .desktop p {
+  color: white;
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  font-size: 12em;
+  user-select: none;
+  margin: 0;
+  border: solid white;
+  border-width: 0px 0px 10px 0px;
+}
