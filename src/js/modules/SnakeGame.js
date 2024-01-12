@@ -49,21 +49,31 @@ export class SnakeGame extends AppWindow {
 
     updateGame () {
         const lastState = this.gameState[this.gameState.length - 1]
+        const sx = lastState.x
+        const sy = lastState.y
 
-        this.updateBoard()
+        // loss check (is the current position invalid)
+        if (sx >= this.width || sx < 0 || sy >= this.height || sy < 0) {
+            console.log('LOST DUE TO HITTING WALL')
+        }
+        for (let i = 0; i < this.gameState.length - 1; i++) {
+            const px = this.gameState[i].x
+            const py = this.gameState[i].y
 
+            if (px == sx && py == sy) {
+                console.log('LOST DUE TO HITTING TAIL')
+            }
+        }
+        
         // food check
         if (this.foodPos.x == lastState.x && this.foodPos.y == lastState.y) {
             this.snakeLength++
             this.spawnFood()
         }
 
-        // loss check
+        this.updateBoard()
 
         // advance
-        const sx = lastState.x
-        const sy = lastState.y
-
         if (this.currentDirection == this.Directions.Up) {
             this.gameState.push( { x: sx, y: sy - 1 } )
         } else if (this.currentDirection == this.Directions.Right) {
