@@ -32,5 +32,5 @@ pwd-desktop {
 }
 
 .hidden {
-  opacity: 10%;
+  display: none;
 }

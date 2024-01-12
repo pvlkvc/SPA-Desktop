@@ -15,6 +15,7 @@ export class Chat extends AppWindow {
     console.log('chat game added.')
 
     this.#retrieveUsername()
+    
     if (!this.#username) {
       this.#buildMenu()
     } else {
@@ -218,8 +219,25 @@ export class Chat extends AppWindow {
     this.#username = username
   }
 
+  usernamePrompt () {
+    const popup = new AppWindow()
+
+    const popupBody = document.createElement('div')
+    popupBody.classList.add('chat-popup')
+
+    const usernameInput = document.createElement('input')
+    this.usernameInput.classList.add('chat-popup-input')
+    usernameInput.setAttribute('placeholder', 'new username')
+    popupBody.appendChild(usernameInput)
+    
+    popup.appBox.appendChild(popupBody)
+
+    // send to desktop
+    document.getElementById('desktop').add(popup)
+  }
+
   #createContextMenu () {
-    this.addContextMenuOption('optionA', 'link')
+    this.addContextMenuOption('Change username', this.usernamePrompt)
     this.addContextMenuOption('optionB', 'link')
     this.addContextMenuOption('optionC', 'link')
   }

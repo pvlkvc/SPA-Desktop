@@ -74,13 +74,16 @@ export class Desktop extends HTMLElement {
 
     #openApp (appElName) {
         const app = document.createElement(appElName)
+        this.addApp(app)
+    }
 
+    addApp (app) {
         // spawing at position
         app.appBox.style.left = this.#appOffset + 'px'
         app.appBox.style.top = this.#appOffset + 'px'
         this.#appOffset += 10
 
-        // focused on creating
+        // focused upon creating
         app.appBox.style.zIndex = ++this.#topZ
         this.#focused = app
 

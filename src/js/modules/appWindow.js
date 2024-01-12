@@ -8,6 +8,12 @@ export class AppWindow extends HTMLElement {
   constructor () {
     super()
 
+    console.log('app window constructed')
+  }
+
+  connectedCallback () {
+    console.log('app window added.')
+
     this.#createAppWindow()
     this.#createContextMenu()
     this.appBox.addEventListener('contextmenu', (event) => {
@@ -16,11 +22,9 @@ export class AppWindow extends HTMLElement {
       console.log('context menu should be now open')
     })
 
-    console.log('app window constructed')
-  }
-
-  connectedCallback () {
-    console.log('app window added.')
+    const testVar = document.createElement('p')
+    this.testVar.textContent = 'meow'
+    this.appendChild(testVar)
   }
 
   #createAppWindow () {
@@ -46,6 +50,7 @@ export class AppWindow extends HTMLElement {
       this.remove()
     })
 
+    // this.appendChild(this.appBox)
     document.getElementById('desktop').appendChild(this.appBox)
   }
 
@@ -70,11 +75,21 @@ export class AppWindow extends HTMLElement {
   }
 
   addContextMenuOption (text, href) {
+    function callF () {
+      testM()
+    }
+
     const listing = document.createElement('li')
-    const anchor = document.createElement('a')
-    anchor.innerHTML = text
-    anchor.setAttribute('href', href)
+    // const anchor = document.createElement('a')
+    // anchor.innerHTML = text
+    // anchor.setAttribute('href', 'javascript:(' + callF + ')')
     listing.appendChild(anchor)
     this.contextMenu.lastChild.appendChild(listing)
+
+    console.log(href)
+  }
+
+  testM () {
+    console.log('A TESTY TEST')
   }
 }
