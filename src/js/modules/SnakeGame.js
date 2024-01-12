@@ -11,11 +11,12 @@ export class SnakeGame extends AppWindow {
     gameStarted
     width = 10
     height = 10
-    score
+    snakeLength = 1
     currentDirection
     gameState = []
     gameboard
     foodPos
+    interval
 
     constructor () {
         super()
@@ -43,33 +44,40 @@ export class SnakeGame extends AppWindow {
         this.createBoard()
         this.spawnFood()
 
-        setInterval(() => {
-            const lastState = this.gameState[this.gameState.length - 1]
+        this.interval = setInterval(() => this.updateGame(), 500)
+    }
 
-            this.updateBoard()
+    updateGame () {
+        const lastState = this.gameState[this.gameState.length - 1]
 
-            // food check
-            if (this.foodPos.x == lastState.x && this.foodPos.y == lastState.y) {
-                length++
-                this.spawnFood()
-            }
+        this.updateBoard()
 
-            // loss check
+        // food check
+        if (this.foodPos.x == lastState.x && this.foodPos.y == lastState.y) {
+            this.snakeLength++
+            this.spawnFood()
+        }
 
-            // advance
-            const sx = lastState.x
-            const sy = lastState.y
+        // loss check
 
-            if (this.currentDirection == this.Directions.Up) {
-                this.gameState.push( { x: sx, y: sy - 1 } )
-            } else if (this.currentDirection == this.Directions.Right) {
-                this.gameState.push( { x: sx + 1, y: sy } )
-            } else if (this.currentDirection == this.Directions.Down) {
-                this.gameState.push( { x: sx, y: sy + 1 } )
-            } else if (this.currentDirection == this.Directions.Left) {
-                this.gameState.push( { x: sx - 1, y: sy } )
-            }
-          }, 1000)
+        // advance
+        const sx = lastState.x
+        const sy = lastState.y
+
+        if (this.currentDirection == this.Directions.Up) {
+            this.gameState.push( { x: sx, y: sy - 1 } )
+        } else if (this.currentDirection == this.Directions.Right) {
+            this.gameState.push( { x: sx + 1, y: sy } )
+        } else if (this.currentDirection == this.Directions.Down) {
+            this.gameState.push( { x: sx, y: sy + 1 } )
+        } else if (this.currentDirection == this.Directions.Left) {
+            this.gameState.push( { x: sx - 1, y: sy } )
+        }
+
+        // cleanup of too old states
+        for (let i = 0; i < this.gameState.length - this.snakeLength; i++) {
+            this.gameState.shift()
+        }
     }
 
     createBoard () {
@@ -94,6 +102,13 @@ export class SnakeGame extends AppWindow {
 
     updateBoard () {
         // fill all with blue
+        for (let i = 0; i < this.height; i++) {
+            for (let j = 0; j < this.width; j++) {
+                const td = this.gameboard.rows[i].cells[j]
+                td.classList.remove('snake-board-snake-cell')
+                td.classList.remove('snake-board-food-cell')
+            }
+        }
 
         for (let i = 0; i < this.gameState.length; i++) {
             const sx = this.gameState[i].x
@@ -163,27 +178,41 @@ export class SnakeGame extends AppWindow {
         this.foodPos = { x: fx, y: fy }
     }
 
+    dynamicallyUpdate () {
+        this.updateGame()
+        clearInterval(this.interval)
+        this.interval = setInterval(() => this.updateGame(), 500)
+    }
+
     goUp () {
-        if (this.currentDirection != this.Directions.Down) {
+        if (this.currentDirection != this.Directions.Down
+            && this.currentDirection != this.Directions.Up) {
             this.currentDirection = this.Directions.Up
+            this.dynamicallyUpdate()
         }
     }
 
     goRight () {
-        if (this.currentDirection != this.Directions.Left) {
+        if (this.currentDirection != this.Directions.Left
+            && this.currentDirection != this.Directions.Right) {
             this.currentDirection = this.Directions.Right
+            this.dynamicallyUpdate()
         }
     }
 
     goDown () {
-        if (this.currentDirection != this.Directions.Up) {
+        if (this.currentDirection != this.Directions.Up
+            && this.currentDirection != this.Directions.Down) {
             this.currentDirection = this.Directions.Down
+            this.dynamicallyUpdate()
         }
     }
 
     goLeft () {
-        if (this.currentDirection != this.Directions.Right) {
+        if (this.currentDirection != this.Directions.Right
+            && this.currentDirection != this.Directions.Left) {
             this.currentDirection = this.Directions.Left
+            this.dynamicallyUpdate()
         }
     }
 }

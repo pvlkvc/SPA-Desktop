@@ -1,5 +1,6 @@
 .snake-board-table {
     background-color: aqua;
+    border-collapse: collapse;
 }
 
 .snake-board-td {
