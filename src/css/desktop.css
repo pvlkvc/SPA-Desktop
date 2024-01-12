@@ -10,10 +10,11 @@ pwd-desktop .desktop {
   height: 100vh;
   background-color: rgb(255, 220, 234);
 }
+
 .desktop-time {
   color: white;
   position: absolute;
-  right: 5%;
+  right: 10%;
   bottom: 5%;
   font-size: 12em;
   user-select: none;

@@ -119,7 +119,8 @@ export class Desktop extends HTMLElement {
 
     getTime () {
         const date = new Date()
-        const time = date.getHours() + ":" + date.getMinutes()
+        const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+        const time = date.getHours() + ":" + mins
         return time
     }
 }

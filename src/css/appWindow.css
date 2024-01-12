@@ -64,6 +64,7 @@
 }
 
 .app-context-menu li {
+  text-wrap: nowrap;
   padding: 10px;
   border: solid rgb(207, 124, 138);
   border-width: 0px 0px 1px 0px;
@@ -74,7 +75,7 @@
   cursor: pointer;
 }
 
-.app-context-menu a {
+.app-context-menu p {
   color: rgb(230, 75, 101);
 }
 

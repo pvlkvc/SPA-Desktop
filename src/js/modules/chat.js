@@ -4,7 +4,7 @@ export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
   #username
   #websocket
-  #chatBox
+  chatBox
 
   constructor () {
     super()
@@ -81,10 +81,10 @@ export class Chat extends AppWindow {
 
   #buildChat () {
     const chatContainer = document.createElement('div')
-    chatContainer.classList.add('column')
+    chatContainer.classList.add('column', 'chat-container')
 
     const chatBox = document.createElement('div')
-    this.#chatBox = chatBox
+    this.chatBox = chatBox
     chatBox.classList.add('chat-box')
     chatContainer.appendChild(chatBox)
 
@@ -123,12 +123,12 @@ export class Chat extends AppWindow {
   #handleNewMessage (parsed) {
     console.log(parsed)
 
-    const atBottom = this.#chatBox.scrollHeight == 
-    this.#chatBox.scrollTop + this.#chatBox.offsetHeight
+    const atBottom = this.chatBox.scrollHeight == 
+    this.chatBox.scrollTop + this.chatBox.offsetHeight
 
     const messageRow = document.createElement('div')
     messageRow.classList.add('chat-row')
-    this.#chatBox.appendChild(messageRow)
+    this.chatBox.appendChild(messageRow)
 
     if (parsed.type == "message") {
       this.#userMessage(messageRow, parsed.username, parsed.data)
@@ -137,7 +137,7 @@ export class Chat extends AppWindow {
     }
 
     if (atBottom) {
-      this.#chatBox.scrollTop = this.#chatBox.scrollHeight - this.#chatBox.offsetHeight
+      this.chatBox.scrollTop = this.chatBox.scrollHeight - this.chatBox.offsetHeight
     }
   }
 
@@ -220,24 +220,56 @@ export class Chat extends AppWindow {
   }
 
   usernamePrompt () {
-    const popup = new AppWindow()
+    if (this.appBox.getElementsByClassName('grayed-out').length == 0) {
+      const cover = document.createElement('div')
+      cover.classList.add('column', 'grayed-out')
 
-    const popupBody = document.createElement('div')
-    popupBody.classList.add('chat-popup')
+      const popup = document.createElement('div')
+      popup.classList.add('column', 'chat-popup')
+      cover.appendChild(popup)
 
-    const usernameInput = document.createElement('input')
-    this.usernameInput.classList.add('chat-popup-input')
-    usernameInput.setAttribute('placeholder', 'new username')
-    popupBody.appendChild(usernameInput)
-    
-    popup.appBox.appendChild(popupBody)
+      const usernameInput = document.createElement('input')
+      usernameInput.classList.add('chat-popup-input')
+      usernameInput.setAttribute('placeholder', 'new username')
+      popup.appendChild(usernameInput)
 
-    // send to desktop
-    document.getElementById('desktop').add(popup)
+      const usernameSubmit = document.createElement('input')
+      usernameSubmit.setAttribute('type', 'submit')
+      usernameSubmit.classList.add('chat-popup-button')
+      usernameSubmit.setAttribute('value', 'Change username')
+      usernameSubmit.addEventListener('click', () => {
+        if (usernameInput.value != '') {
+          this.#newUsername(usernameInput.value)
+          this.appBox.getElementsByClassName('grayed-out')[0].remove()
+        }
+      })
+      popup.appendChild(usernameSubmit)
+
+      usernameInput.addEventListener('keypress', (event) => {
+        if (event.key == 'Enter') {
+          usernameSubmit.click()
+        }
+      })
+
+      const cancelButton = document.createElement('input')
+      cancelButton.setAttribute('type', 'submit')
+      cancelButton.classList.add('chat-popup-button')
+      cancelButton.setAttribute('value', 'Go back')
+      cancelButton.addEventListener('click', () => {
+        this.appBox.getElementsByClassName('grayed-out')[0].remove()
+      })
+      popup.appendChild(cancelButton)
+
+      this.appBox.lastChild.appendChild(cover)
+    }
   }
 
   #createContextMenu () {
-    this.addContextMenuOption('Change username', this.usernamePrompt)
+    this.addContextMenuOption('Change username', 'chatUsernameChangeButton')
+    const changeUsernameButton = document.getElementById('chatUsernameChangeButton')
+    changeUsernameButton.addEventListener('click', () => { 
+      this.usernamePrompt() 
+    })
     this.addContextMenuOption('optionB', 'link')
     this.addContextMenuOption('optionC', 'link')
   }

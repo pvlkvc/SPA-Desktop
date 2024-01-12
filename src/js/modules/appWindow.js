@@ -15,6 +15,7 @@ export class AppWindow extends HTMLElement {
       this.#showContextMenu(event.pageX, event.clientY)
       console.log('context menu should be now open')
     })
+    document.addEventListener('click', () => { this.#hideContextMenu() })
 
     console.log('app window constructed')
   }
@@ -70,22 +71,19 @@ export class AppWindow extends HTMLElement {
     this.contextMenu.classList.remove('hidden')
   }
 
-  addContextMenuOption (text, href) {
-    function callF () {
-      testM()
-    }
-
-    const listing = document.createElement('li')
-    // const anchor = document.createElement('a')
-    // anchor.innerHTML = text
-    // anchor.setAttribute('href', 'javascript:(' + callF + ')')
-    listing.appendChild(anchor)
-    this.contextMenu.lastChild.appendChild(listing)
-
-    console.log(href)
+  #hideContextMenu() {
+    this.contextMenu.classList.add('hidden')
   }
 
-  testM () {
-    console.log('A TESTY TEST')
+  addContextMenuOption (text, id) {
+    const listing = document.createElement('li')
+    const p = document.createElement('p')
+    listing.setAttribute('id', id)
+    p.textContent = text
+    // const anchor = document.createElement('a')
+    // anchor.innerHTML = text
+    // anchor.setAttribute('href', href + '()')
+    listing.appendChild(p)
+    this.contextMenu.lastChild.appendChild(listing)
   }
 }
