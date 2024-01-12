@@ -75,10 +75,10 @@ export class AppWindow extends HTMLElement {
     this.contextMenu.classList.add('hidden')
   }
 
-  addContextMenuOption (text, id) {
+  addContextMenuOption (text, cl) {
     const listing = document.createElement('li')
     const p = document.createElement('p')
-    listing.setAttribute('id', id)
+    listing.classList.add(cl)
     p.textContent = text
     // const anchor = document.createElement('a')
     // anchor.innerHTML = text

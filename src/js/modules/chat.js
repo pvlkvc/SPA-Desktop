@@ -3,6 +3,7 @@ import { AppWindow } from './AppWindow.js'
 export class Chat extends AppWindow {
   #url = 'wss://courselab.lnu.se/message-app/socket'
   #username
+  #channel
   #websocket
   chatBox
 
@@ -15,6 +16,7 @@ export class Chat extends AppWindow {
     console.log('chat game added.')
 
     this.#retrieveUsername()
+    this.#retrieveChannel()
     
     if (!this.#username) {
       this.#buildMenu()
@@ -131,7 +133,11 @@ export class Chat extends AppWindow {
     this.chatBox.appendChild(messageRow)
 
     if (parsed.type == "message") {
-      this.#userMessage(messageRow, parsed.username, parsed.data)
+      if (parsed.channel == this.#channel) {
+        this.#userMessage(messageRow, parsed.username, parsed.data)
+      } else {
+        messageRow.remove()
+      }
     } else if (parsed.type == "notification") {
       this.#chatLog(messageRow, parsed.data)
     }
@@ -194,7 +200,7 @@ export class Chat extends AppWindow {
       type: "message",
       data : messageText,
       username: this.#username,
-      channel: "my, not so secret, channel2",
+      channel: this.#channel,
       key: "eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd"
     }
     const response = JSON.stringify(body)
@@ -210,7 +216,6 @@ export class Chat extends AppWindow {
   #retrieveUsername () {
     const localStorage = window.localStorage
     this.#username = localStorage.getItem('chat-username') || null
-    console.log(this.#username)
   }
 
   #newUsername (username) {
@@ -219,58 +224,85 @@ export class Chat extends AppWindow {
     this.#username = username
   }
 
-  usernamePrompt () {
-    if (this.appBox.getElementsByClassName('grayed-out').length == 0) {
-      const cover = document.createElement('div')
-      cover.classList.add('column', 'grayed-out')
+  #retrieveChannel () {
+    const localStorage = window.localStorage
+    this.#channel = localStorage.getItem('chat-channel') || null
+  }
 
-      const popup = document.createElement('div')
-      popup.classList.add('column', 'chat-popup')
-      cover.appendChild(popup)
+  #newChannel (channel) {
+    const localStorage = window.localStorage
+    localStorage.setItem('chat-channel', channel)
+    this.#channel = channel
+  }
 
-      const usernameInput = document.createElement('input')
-      usernameInput.classList.add('chat-popup-input')
-      usernameInput.setAttribute('placeholder', 'new username')
-      popup.appendChild(usernameInput)
+  changePrompt (c) {
+    if (c == 0 || c == 1) {
+      let changed = ''
+      if (c == 0) {
+        changed = 'username'
+      } else {
+        changed = 'channel'
+      }
 
-      const usernameSubmit = document.createElement('input')
-      usernameSubmit.setAttribute('type', 'submit')
-      usernameSubmit.classList.add('chat-popup-button')
-      usernameSubmit.setAttribute('value', 'Change username')
-      usernameSubmit.addEventListener('click', () => {
-        if (usernameInput.value != '') {
-          this.#newUsername(usernameInput.value)
+      if (this.appBox.getElementsByClassName('grayed-out').length == 0) {
+        const cover = document.createElement('div')
+        cover.classList.add('column', 'grayed-out')
+
+        const popup = document.createElement('div')
+        popup.classList.add('column', 'chat-popup')
+        cover.appendChild(popup)
+
+        const input = document.createElement('input')
+        input.classList.add('chat-popup-input')
+        input.setAttribute('placeholder', 'new ' + changed)
+        popup.appendChild(input)
+
+        const submit = document.createElement('input')
+        submit.setAttribute('type', 'submit')
+        submit.classList.add('chat-popup-button')
+        submit.setAttribute('value', 'Change ' + changed)
+        submit.addEventListener('click', () => {
+          if (input.value != '') {
+            changed = changed.charAt(0).toUpperCase() + changed.slice(1)
+            eval('this.#new' + changed + "('" + input.value + "')")
+            this.appBox.getElementsByClassName('grayed-out')[0].remove()
+          }
+        })
+        popup.appendChild(submit)
+
+        input.addEventListener('keypress', (event) => {
+          if (event.key == 'Enter') {
+            submit.click()
+          }
+        })
+
+        const cancelButton = document.createElement('input')
+        cancelButton.setAttribute('type', 'submit')
+        cancelButton.classList.add('chat-popup-button')
+        cancelButton.setAttribute('value', 'Go back')
+        cancelButton.addEventListener('click', () => {
           this.appBox.getElementsByClassName('grayed-out')[0].remove()
-        }
-      })
-      popup.appendChild(usernameSubmit)
+        })
+        popup.appendChild(cancelButton)
 
-      usernameInput.addEventListener('keypress', (event) => {
-        if (event.key == 'Enter') {
-          usernameSubmit.click()
-        }
-      })
-
-      const cancelButton = document.createElement('input')
-      cancelButton.setAttribute('type', 'submit')
-      cancelButton.classList.add('chat-popup-button')
-      cancelButton.setAttribute('value', 'Go back')
-      cancelButton.addEventListener('click', () => {
-        this.appBox.getElementsByClassName('grayed-out')[0].remove()
-      })
-      popup.appendChild(cancelButton)
-
-      this.appBox.lastChild.appendChild(cover)
+        this.appBox.lastChild.appendChild(cover)
+      }
+    } else {
+      return
     }
   }
 
   #createContextMenu () {
-    this.addContextMenuOption('Change username', 'chatUsernameChangeButton')
-    const changeUsernameButton = document.getElementById('chatUsernameChangeButton')
+    this.addContextMenuOption('Change username', 'chat-username-change-button')
+    const changeUsernameButton = this.appBox.getElementsByClassName('chat-username-change-button')[0]
     changeUsernameButton.addEventListener('click', () => { 
-      this.usernamePrompt() 
+      this.changePrompt(0) 
     })
-    this.addContextMenuOption('optionB', 'link')
+    this.addContextMenuOption('Change channel', 'chat-channel-change-button')
+    const changeChannelButton = this.appBox.getElementsByClassName('chat-channel-change-button')[0]
+    changeChannelButton.addEventListener('click', () => { 
+      this.changePrompt(1) 
+    })
     this.addContextMenuOption('optionC', 'link')
   }
 }
