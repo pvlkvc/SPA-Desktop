@@ -103,7 +103,7 @@ export class MemoryGame extends AppWindow {
     const cBox = document.createElement('div')
     cBox.classList.add('controls-box')
     const cText = document.createElement('p')
-    const controls = "R - new game\n↑ - select up\n↓ - select down\n← - select left\n→ - select right\nENTER or SPACE - flip card"
+    const controls = "R - new game\n↑ - up\n↓ - down\n← - left\n→ - right"
     cText.textContent = controls
     cBox.appendChild(cText)
     gameWindow.appendChild(cBox)

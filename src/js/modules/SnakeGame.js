@@ -8,12 +8,12 @@ export class SnakeGame extends AppWindow {
         Left: 3
     }
 
+    snakeGame
     gameStarted
-    width = 10
-    height = 10
-    snakeLength = 1
+    width = 20
+    height = 20
+    snakeLength
     currentDirection
-    gameState = []
     gameboard
     foodPos
     interval
@@ -24,27 +24,60 @@ export class SnakeGame extends AppWindow {
       }
     
     connectedCallback () {
-    console.log('snake game added.')
+        console.log('snake game added.')
 
-    this.setTitle('Snake')
-    this.#setupKeyboardListeners()
+        this.setTitle('Snake')
+        this.#setupKeyboardListeners()
 
-    this.playGame()
+        this.buildApp()
+        this.playGame()
     }
 
     disconnectedCallback () {
-    console.log('snake game removed.')
+        console.log('snake game removed.')
+    }
+
+    buildApp () {
+        this.snakeGame = document.createElement('div')
+        this.snakeGame.classList.add('column', 'snake-game')
+
+        this.appBox.appendChild(this.snakeGame)
+    }
+
+    buildGameUI () {
+        // controls info
+        const cBox = document.createElement('div')
+        cBox.classList.add('controls-box')
+        const cText = document.createElement('p')
+        const controls = "R - new game\n↑ - up\n↓ - down\n← - left\n→ - right"
+        cText.textContent = controls
+        cBox.appendChild(cText)
+        this.snakeGame.appendChild(cBox)
+
+        // restart button
+        const restartButton = document.createElement('input')
+        restartButton.classList.add('memory-game-restart-button')
+        restartButton.setAttribute('type', 'submit')
+        restartButton.setAttribute('value', 'New Game')
+        restartButton.addEventListener('click', () => {
+            this.restartGame()
+        })
+        this.snakeGame.appendChild(restartButton)
     }
 
     playGame () {
+        this.snakeLength = 2
         this.currentDirection = this.Directions.Right
         this.gameStarted = true
+        this.gameState = []
         this.gameState.push( { x: this.width / 2, y: this.height / 2 } )
 
         this.createBoard()
         this.spawnFood()
 
-        this.interval = setInterval(() => this.updateGame(), 500)
+        this.buildGameUI()
+
+        this.interval = setInterval(() => this.updateGame(), 350)
     }
 
     updateGame () {
@@ -98,9 +131,7 @@ export class SnakeGame extends AppWindow {
             this.gameboard.appendChild(tr)
         }
 
-        console.log(this.gameboard.rows[0].cells)
-
-        this.appBox.appendChild(this.gameboard)
+        this.snakeGame.appendChild(this.gameboard)
     }
 
     updateBoard () {
@@ -138,7 +169,7 @@ export class SnakeGame extends AppWindow {
             } else {
             if (event.key == 'r' || event.key == 'R') {
                 event.preventDefault()
-                // todo restart
+                this.restartGame()
             }
             }
         })
@@ -184,7 +215,7 @@ export class SnakeGame extends AppWindow {
     dynamicallyUpdate () {
         this.updateGame()
         clearInterval(this.interval)
-        this.interval = setInterval(() => this.updateGame(), 500)
+        this.interval = setInterval(() => this.updateGame(), 350)
     }
 
     goUp () {
@@ -244,5 +275,11 @@ export class SnakeGame extends AppWindow {
         message.classList.add('snake-gameover-message')
 
         this.gameboard.appendChild(message)
+    }
+
+    restartGame () {
+        this.gameboard.remove()
+        clearInterval(this.interval)
+        this.playGame()
     }
 }
