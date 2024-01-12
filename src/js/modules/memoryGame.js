@@ -3,6 +3,7 @@ import { AppWindow } from './AppWindow'
 export class MemoryGame extends AppWindow {
   #images
   gameStarted = false
+  #gameWindow
   #firstFlip
   #flippedCards
   #width = 4
@@ -37,7 +38,7 @@ export class MemoryGame extends AppWindow {
     menu.classList.add('memory-game-menu')
 
     const text = document.createElement('p')
-    text.textContent = 'Press a button to start a new game'
+    text.textContent = 'Press a button to start a new game\nor press ENTER'
     menu.appendChild(text)
 
     // buttons container
@@ -58,9 +59,9 @@ export class MemoryGame extends AppWindow {
     dimC.setAttribute('value', '4x4')
 
     // buttons listeners
-    dimA.addEventListener('click', () => { this.#gameStart(2, 2) })
-    dimB.addEventListener('click', () => { this.#gameStart(2, 4) })
-    dimC.addEventListener('click', () => { this.#gameStart(4, 4) })
+    dimA.addEventListener('click', () => { this.gameStart(2, 2) })
+    dimB.addEventListener('click', () => { this.gameStart(2, 4) })
+    dimC.addEventListener('click', () => { this.gameStart(4, 4) })
 
     // adding buttons to the website
     buttonRow.appendChild(dimA)
@@ -73,7 +74,7 @@ export class MemoryGame extends AppWindow {
   /**
    * Advances from the menu to the game.
    */
-  #gameStart (w, h) {
+  gameStart (w, h) {
     this.gameStarted = true
     this.#width = w
     this.#height = h
@@ -90,14 +91,13 @@ export class MemoryGame extends AppWindow {
    * Creates the game element.
    */
   #createGame () {
-    const gameWindow = document.createElement('div')
-    gameWindow.setAttribute('id', 'memoryGame')
-    gameWindow.classList.add('memory-game-window')
+    this.#gameWindow = document.createElement('div')
+    this.#gameWindow.classList.add('memory-game-window')
 
     // the actual game
     this.#shuffleGameImages(this.#width * this.#height)
     this.#createGameboard()
-    gameWindow.appendChild(this.gameboard)
+    this.#gameWindow.appendChild(this.gameboard)
 
     // controls info
     const cBox = document.createElement('div')
@@ -106,22 +106,21 @@ export class MemoryGame extends AppWindow {
     const controls = "R - new game\n↑ - select up\n↓ - select down\n← - select left\n→ - select right\nENTER or SPACE - flip card"
     cText.textContent = controls
     cBox.appendChild(cText)
-    gameWindow.appendChild(cBox)
+    this.#gameWindow.appendChild(cBox)
 
     // restart button
     const restartButton = document.createElement('input')
     restartButton.classList.add('memory-game-restart-button')
     restartButton.setAttribute('type', 'submit')
     restartButton.setAttribute('value', 'New Game')
-    restartButton.setAttribute('id', 'memoryRestart')
     restartButton.addEventListener('click', () => {
-      this.appBox.removeChild(gameWindow)
+      this.appBox.removeChild(this.#gameWindow)
       this.#createGame()
     })
-    gameWindow.appendChild(restartButton)
+    this.#gameWindow.appendChild(restartButton)
 
     // placing this all inside the app window
-    this.appBox.appendChild(gameWindow)
+    this.appBox.appendChild(this.#gameWindow)
   }
 
   /**
@@ -240,11 +239,13 @@ export class MemoryGame extends AppWindow {
     this.addEventListener('keypress', function (event) {
         if (!this.gameStarted) {
             console.log('memory menu keyboard press')
-            // todo this
+            if (event.key == 'Enter' || event.key == ' ') {
+              this.gameStart(4, 4)
+            }
         } else {
           if (event.key == 'r' || event.key == 'R') {
             event.preventDefault()
-            document.getElementById('memoryRestart').click()
+            this.restartGame()
           } else if (event.key == 'Enter' || event.key == ' ') {
             if (!this.gameboard.classList.contains('unclickable')) {
               this.selectedTile.click()
@@ -265,6 +266,11 @@ export class MemoryGame extends AppWindow {
         }
       }
   })
+  }
+
+  restartGame () {
+    this.appBox.removeChild(this.#gameWindow)
+    this.#createGame()
   }
 
   #selectTile (arrayIndex) {

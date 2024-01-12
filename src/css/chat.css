@@ -76,6 +76,7 @@
 }
 
 .chat-send-box {
+
 }
 
 .chat-send-textbox {
@@ -83,7 +84,20 @@
 }
 
 .chat-send-button {
-    
+    background-color: rgb(224, 84, 143);
+    color: white;
+    font-family: monospace;
+    font-weight: bold;
+    border: none;
+}
+
+.chat-send-button:hover {
+    background-color: rgb(204, 65, 123);
+    cursor: pointer;
+}
+
+.chat-send-button:active {
+    background-color: rgb(204, 43, 110);
 }
 
 .chat-popup {

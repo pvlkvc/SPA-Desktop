@@ -9,6 +9,11 @@
   justify-content: space-evenly;
 }
 
+.memory-game-menu p {
+  white-space: pre-wrap;
+  text-align: center;
+}
+
 .memory-menu-button-box {
   align-items: center;
   gap: 10px;
@@ -32,6 +37,11 @@
 
 .memory-menu-button:active {
   background-color: rgb(199, 43, 105);
+}
+
+.memory-menu-button-selected {
+  outline: 4px solid rgb(228, 18, 116);
+  outline-offset: -2px;
 }
 
 .memory-game-menu p {

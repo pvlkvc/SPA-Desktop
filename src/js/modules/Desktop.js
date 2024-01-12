@@ -44,10 +44,14 @@ export class Desktop extends HTMLElement {
         this.#desktop.classList.add('desktop')
         document.getElementById('pwd-desktop').appendChild(this.#desktop)
 
-        const time = this.getTime()
         const timeEl = document.createElement('p')
-        timeEl.textContent = time
         timeEl.classList.add('desktop-time')
+        const time = this.getTime()
+        timeEl.textContent = time
+        setInterval(() => {
+            const time = this.getTime()
+            timeEl.textContent = time
+        }, 60000)
         this.#desktop.appendChild(timeEl)
 
         // taskbar buttons
