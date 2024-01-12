@@ -2,10 +2,22 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 70px;
+  width: 80px;
   height: 100vh;
   gap: 15px;
-  background-image: linear-gradient(to right, transparent 23%, rgb(243, 130, 164) 25%, rgb(243, 130, 164) 75%, transparent 77%);
+  background-image: linear-gradient(
+    to right,
+    transparent 15px,
+    rgb(243, 130, 164) 17px,
+    rgb(243, 130, 164) 18px,
+    rgb(255, 255, 255) 19px,
+    rgb(243, 130, 164) 20px,
+    rgb(243, 130, 164) 60px,
+    rgb(255, 255, 255) 61px,
+    rgb(243, 130, 164) 62px,
+    rgb(243, 130, 164) 63px,
+    transparent 65px
+  );
   z-index: 10000;
   padding-left: 5px;
 }
@@ -16,8 +28,8 @@
 }
 
 .taskbar .button {
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 100%;
   background-color: rgb(236, 71, 148);
   border-radius: 45%;
 }
@@ -32,5 +44,5 @@
 }
 
 .taskbar a {
-  max-width: 70px;
+  max-width: 80px;
 }
