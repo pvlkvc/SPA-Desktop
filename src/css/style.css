@@ -4,6 +4,7 @@
 @import url('appWindow.css');
 @import url('memoryGame.css');
 @import url('chat.css');
+@import url('snakeGame.css');
 
 body {
   margin: 0;

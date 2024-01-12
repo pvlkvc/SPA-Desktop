@@ -43,6 +43,12 @@ export class Desktop extends HTMLElement {
         })
         taskbar.appendChild(button)
 
+        button = this.#createButton("img/pet-1.png")
+        button.addEventListener('click', (event) => {
+            this.#openApp('snake-game')
+        })
+        taskbar.appendChild(button)
+
         dap.makeDropZone(this.#desktop)
 
         // sending events over to the focused app

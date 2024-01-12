@@ -1,0 +1,10 @@
+.snake-board-table {
+    background-color: blue;
+}
+
+.snake-board-td {
+    background-color: aqua;
+    border: 1px solid black;
+    height: 30px;
+    width: 30px;
+}
