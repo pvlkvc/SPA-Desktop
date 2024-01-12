@@ -65,6 +65,7 @@ export class Chat extends AppWindow {
     loginButton.addEventListener('click', () => {
       if (usernameInput.value != '') {
         this.#newUsername(usernameInput.value)
+        this.#newChannel(channelInput.value)
         menu.remove()
         this.#openSocket()
         this.#buildChat()
