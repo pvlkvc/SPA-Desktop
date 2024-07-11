@@ -1,7 +1,8 @@
 # A3 SPA
-![Mitch and Maya](representative_image.jpg)
 
-This is a personal web desktop single page application (PWD SPA). It's basically a desktop in a browser. 
+Presentation: https://youtu.be/BpPvL_ACGCU
+
+This is a personal web desktop single page application (PWD SPA) created for the 1DV528 web programming course at Linnaeus University. It's basically a desktop in a browser. 
 
 It has 3 applications:
 - a memory game
@@ -10,6 +11,7 @@ It has 3 applications:
 
 ## How to download/start
 Prerequisites: npm
+The application is not available online and can be only accessed locally.
 
 1. Download the repository.
 2. Install prerequisites by running `npm install` while in the directory.
